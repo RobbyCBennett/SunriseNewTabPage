@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Swift Tab Switcher - Options</title>
+
+	<link rel="icon" type="image/svg+xml" href="icon.svg">
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+</head>
+
+<body>
+	<header class="horizontalScrolling test">
+		<div class="container fixedContainer split">
+			<div>
+				<img src="icon.svg" width="40px" height="40px">
+
+				<h1>Swift Tab Switcher</h1>
+			</div>
+			<div>
+				<a>
+					<h3 class="selected">OPTIONS</h3>
+				</a>
+
+				<a href="support.html">
+					<h3>SUPPORT</h3>
+				</a>
+
+				<a href="https://www.codebyrob.com/software" target="_blank">
+					<h3>MORE</h3>
+				</a>
+			</div>
+		</div>
+	</header>
+
+	<div id="banner">
+		<div class="container split">
+			<h3 id="bannerMessage">
+				<a href="mailto:rob@codebyrob.com?Subject=Swift%20Tab%20Switcher%20-%20Support" target="_blank">Contact me</a> about questions, feature requests, bugs, and feedback
+			</h3>
+			<input id="close" name="Close" type="button" id="closeBanner" class="close">
+		</div>
+	</div>
+
+	<section id="options">
+		<div class="container">
+			<div class="box">
+				<h2>Options</h2>
+
+				<label>
+					<input type="checkbox" id="skip">
+					Skip to and from the first and last tabs
+				</label><br>
+
+				<label>
+					<input type="checkbox" id="dual">
+					Move between two Chrome windows
+				</label>
+
+				<h3>
+					Keyboard shortcuts: click
+					<a href="#" id="extensionsLink">here</a>.<br>
+					Then, find Swift Tab Switcher and make some custom shortcuts.
+				</h3>
+			</div>
+
+			<h3 id="saved">
+				<img src="checkYellow.svg" width="16px" height="16px">
+				Options saved to your Google account
+			</h3>
+		</div>
+	</section>
+
+	<script src="animateSaved.js"></script>
+	<script src="options.js"></script>
+	<script src="focusStyleForAccessibility.js"></script>
+	<script src="banner.js"></script>
+</body>
+
+</html>
