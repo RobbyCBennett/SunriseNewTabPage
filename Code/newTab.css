@@ -1,0 +1,72 @@
+/* Colors */
+:root {
+	--color: #FFFFFF;
+	--bgColor: #FFFFFF;
+	--overlayColor: rgba(0, 0, 0, 0.35);
+}
+
+
+
+/* Fonts */
+.fontMain, h1, h2, h3, h4, h5, h6 {
+	font-family: 'Montserrat', sans-serif;
+}
+.fontAccent {
+	font-family: 'Marck Script', sans-serif;
+	font-weight: normal;
+}
+
+
+
+/* Fixes */
+body {
+	user-select: none;
+}
+body, h1, h2, h3, h4, h5, h6, p {
+	margin: 0;
+}
+.fadeIn {
+	animation: fadeIn 0.25s;
+}
+@keyframes fadeIn {
+	0% {opacity:0;}
+	100% {opacity:1;}
+}
+
+
+
+
+/* Body */
+body {
+	color: var(--color);
+	background-color: var(--bgColor);
+}
+.background {
+	background-image: url("mountain.jpg");
+	background-size: cover;
+	background-position: top;
+}
+.overlay {
+	width: 100%;
+	height: 100vh;
+	background-color: var(--overlayColor);
+}
+.absoluteCenter {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+
+/* Text */
+.center {
+	text-align: center;
+}
+h1 {
+	font-size: 2.5rem;
+}
+h2 {
+	font-size: 1.5rem;
+}

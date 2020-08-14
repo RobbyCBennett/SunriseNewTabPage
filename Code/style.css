@@ -69,14 +69,14 @@ a, a > *, input, #saved {
 	transition: all 250ms;
 }
 section a:hover, #banner a:hover {
-	color: #FFA412;
+	color: #FF6C6C;
 }
 .userIsUsingTab section a:focus, .userIsUsingTab #banner a:focus {
 	background-color: rgba(255, 194, 0, 0.25);
 }
 
 section a, header .selected, #saved, #banner a {
-	color: #FFC200;
+	color: #FF6C6C;
 }
 #saved {
 	margin-top: 25px;
@@ -139,10 +139,10 @@ input[type="checkbox"] {
 	background-size: cover;
 }
 input[type="checkbox"]:hover, input[type="checkbox"]:checked {
-	border-color: #FFC200;
+	border-color: #FF6C6C;
 }
 input[type="checkbox"]:checked {
-	background-color: #FFC200;
+	background-color: #FF6C6C;
 	background-image: url(checkWhite.svg);
 }
 .userIsUsingTab input[type="checkbox"]:focus::before {
@@ -170,7 +170,7 @@ header a:visited {
 	color: inherit;
 }
 header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selected) {
-	color: #FFA412;
+	color: #FF6C6C;
 }
 .horizontalScrolling {
 	width: 100%;
