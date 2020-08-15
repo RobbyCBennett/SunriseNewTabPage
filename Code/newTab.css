@@ -2,6 +2,7 @@
 :root {
 	--color: #FFFFFF;
 	--bgColor: #FFFFFF;
+	--bgColorDark: #000000;
 	--overlayColor: rgba(0, 0, 0, 0.35);
 }
 
@@ -41,6 +42,11 @@ body {
 	color: var(--color);
 	background-color: var(--bgColor);
 }
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: var(--bgColorDark);
+	}
+}
 .background {
 	background-image: url("mountain.jpg");
 	background-size: cover;
@@ -69,4 +75,18 @@ h1 {
 }
 h2 {
 	font-size: 1.5rem;
+}
+#clock span:not(:last-child)::after {
+    content: ':';
+	margin-left: 0.05em;
+	margin-right: 0.05em;
+}
+#day + #month::before {
+	content: ' ';
+}
+#month::after {
+    content: ' ';
+}
+#day + #year::before {
+    content: ', ';
 }
