@@ -9,13 +9,47 @@
 	</head>
 	<body class="fontMain">
 		<div class="background fadeIn">
-			<div class="overlay">
-				<div class="absoluteCenter center">
+			<div class="overlay center">
+				<div class="verticalCenter">
 					<h1 id="clock">
-						<span id="hour"></span><span id="minute"></span></span>
+						<span id="hour"></span><span id="minute"></span>
 					</h1>
 					<h1 id="weekday" class="fontAccent"></h1>
 					<h2 id="date"><span id="month"></span><span id="day"></span><span id="year"></span></h2>
+				</div>
+
+				<div id="favoritesContainer" class="bottom left">
+					<a id="back">
+						<img src="back.svg">
+					</a>
+					<div id="favorites">
+						<div class="row">
+							<div class="favorite folder">
+								<a>
+									<img src="folder.svg">
+									<p>
+										Folder
+									</p>
+								</a>
+							</div>
+							<div class="favorite website">
+								<a href="https://spotify.com">
+									<img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg">
+									<p>
+										Spotify
+									</p>
+								</a>
+							</div>
+							<div class="favorite website">
+								<a href="https://mail.google.com">
+									<img src="https://upload.wikimedia.org/wikipedia/commons/4/45/New_Logo_Gmail.svg">
+									<p>
+										Gmail
+									</p>
+								</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

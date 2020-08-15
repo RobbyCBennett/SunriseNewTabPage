@@ -1,18 +1,26 @@
-// Constants
+// Variables
 militaryTime = false;
-weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-function updateTime(militaryTime, weekdays, months) {
+bookmarksVisible = true;
+bookmarksBarVisible = true;
+otherBookmarksVisible = false;
+mobileBookmarksVisible = false;
+rootFolderID = null;
+currentFolderID = null;
+numberOfColumns = 3;
+
+function updateTime(militaryTime) {
 	// Time
 	hourSpan = document.getElementById('hour');
 	minuteSpan = document.getElementById('minute');
 	secondSpan = document.getElementById('second');
+	amPMSpan = document.getElementById('amPM');
 
 	date = new Date();
 	hour = date.getHours();
 	minute = date.getMinutes();
 	second = date.getSeconds();
+	amPM = '';
 
 	if (militaryTime) {
 		if (hour < 10) {
@@ -20,11 +28,16 @@ function updateTime(militaryTime, weekdays, months) {
 		}
 	}
 	else {
+		amPM = 'AM';
 		if (hour == 0) {
 			hour = 12;
 		}
 		else if (hour > 12) {
+			amPM = 'PM';
 			hour -= 12;
+		}
+		else if (hour == 12) {
+			amPM = 'PM';
 		}
 	}
 
@@ -44,21 +57,24 @@ function updateTime(militaryTime, weekdays, months) {
 	if (secondSpan != null) {
 		secondSpan.textContent = second;
 	}
+	if (amPMSpan != null) {
+		amPMSpan.textContent = amPM;
+	}
 
 
 	// Weekday
 	weekdaySpan = document.getElementById('weekday');
-	weekday = date.getDay();
+	weekday = date.toLocaleString('default', { weekday: 'long' });
 	if (weekdaySpan != null) {
-		weekdaySpan.textContent = weekdays[weekday];
+		weekdaySpan.textContent = weekday;
 	}
 
 
 	// Date
 	monthSpan = document.getElementById('month');
-	month = date.getMonth();
+	month = date.toLocaleString('default', { month: 'long' });
 	if (monthSpan != null) {
-		monthSpan.textContent = months[month];
+		monthSpan.textContent = month;
 	}
 
 	daySpan = document.getElementById('day');
@@ -76,18 +92,68 @@ function updateTime(militaryTime, weekdays, months) {
 
 
 // Update the time every second
-function updateTimeEverySecond(militaryTime, weekdays, months) {
-	updateTime(militaryTime, weekdays, months);
+function updateTimeEverySecond(militaryTime) {
+	updateTime(militaryTime);
 
 	date = new Date();
 	millisecondsLeft = date.getMilliseconds();
 
 	setTimeout(function() {
-		updateTime(militaryTime, weekdays, months);
+		updateTime(militaryTime);
 		setInterval(function() {
-			updateTime(militaryTime, weekdays, months);
+			updateTime(militaryTime);
 		}, 1000);
 	}, millisecondsLeft);
 }
 
-updateTimeEverySecond(militaryTime, weekdays, months);
+
+
+// Bookmarks
+function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, rootFolderID, currentFolderID, numberOfColumns) {
+	if (bookmarksVisible) {
+		favorites = document.getElementById('favorites');
+
+		// Decide what folders to start with
+		if (rootFolderID == null) {
+			rootFolderID = '0';
+
+			if (bookmarksBarVisible && !otherBookmarksVisible && !mobileBookmarksVisible) {
+				rootFolderID = '1';
+			}
+			else if (!bookmarksBarVisible && otherBookmarksVisible && !mobileBookmarksVisible) {
+				rootFolderID = '2';
+			}
+			else if (!bookmarksBarVisible && !otherBookmarksVisible && mobileBookmarksVisible) {
+				rootFolderID = '2';
+			}
+
+			currentFolderID = rootFolderID;
+		}
+
+		chrome.bookmarks.getChildren(currentFolderID, function getBookmarks(currentFolder) {
+			for (var i = 0; i < currentFolder.length; i++) {
+				linkOrFolder = currentFolder[i];
+
+				console.log(numberOfColumns);
+				if (i % numberOfColumns == 0) {
+					console.log('new row');
+				}
+				console.log(i);
+
+				// Link
+				if (linkOrFolder.url != null) {
+					console.log('Link: ' + linkOrFolder.title + ', ' + linkOrFolder.url);
+				}
+				// Folder
+				else {
+					console.log('Folder: ' + linkOrFolder.title + ', ' + linkOrFolder.id);
+				}
+			}
+		}, numberOfColumns);
+	}
+}
+
+
+
+updateTimeEverySecond(militaryTime);
+displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns);

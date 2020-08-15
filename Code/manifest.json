@@ -15,7 +15,8 @@
 		"default_icon": "icon128.png"
 	},
 	"permissions": [
-		"storage"
+		"storage",
+		"bookmarks"
 	],
 	"chrome_url_overrides" : {
 		"newtab": "newTab.html"
