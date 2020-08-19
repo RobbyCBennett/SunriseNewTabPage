@@ -7,7 +7,7 @@ otherBookmarksVisible = false;
 mobileBookmarksVisible = false;
 rootFolderID = null;
 currentFolderID = null;
-numberOfColumns = 3;
+numberOfColumns = 5;
 
 function updateTime(militaryTime) {
 	// Time
@@ -109,9 +109,11 @@ function updateTimeEverySecond(militaryTime) {
 
 
 // Bookmarks
-function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, rootFolderID, currentFolderID, numberOfColumns) {
+function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns) {
 	if (bookmarksVisible) {
+		// Clear the current view of favorites
 		favorites = document.getElementById('favorites');
+		favorites.innerHTML = '';
 
 		// Decide what folders to start with
 		if (rootFolderID == null) {
@@ -131,29 +133,94 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 		}
 
 		chrome.bookmarks.getChildren(currentFolderID, function getBookmarks(currentFolder) {
+			rowI = -1;
 			for (var i = 0; i < currentFolder.length; i++) {
 				linkOrFolder = currentFolder[i];
 
-				console.log(numberOfColumns);
+				// New row
 				if (i % numberOfColumns == 0) {
-					console.log('new row');
+					rowI++;
+
+					var row = document.createElement('div');
+					row.className = 'row';
+					row.id = 'row' + rowI;
+					favorites.appendChild(row)
 				}
-				console.log(i);
 
 				// Link
+				row = document.getElementById('row' + rowI);
 				if (linkOrFolder.url != null) {
-					console.log('Link: ' + linkOrFolder.title + ', ' + linkOrFolder.url);
+					var favorite = document.createElement('div');
+					favorite.className = 'favorite website';
+					row.appendChild(favorite);
+
+					var anchor = document.createElement('a');
+					anchor.href = linkOrFolder.url;
+					favorite.appendChild(anchor);
+
+					var image = document.createElement('img');
+					image.src = 'website.svg';
+					// image.src = 'chrome://favicon/' + linkOrFolder.url;
+					anchor.appendChild(image);
+
+					var paragraph = document.createElement('p');
+					paragraph.innerHTML = linkOrFolder.title;
+					anchor.appendChild(paragraph);
 				}
 				// Folder
 				else {
-					console.log('Folder: ' + linkOrFolder.title + ', ' + linkOrFolder.id);
+					var favorite = document.createElement('div');
+					favorite.className = 'favorite folder';
+					favorite.dataset.id = linkOrFolder.id;
+					row.appendChild(favorite);
+
+					var button = document.createElement('button');
+					favorite.appendChild(button);
+
+					var image = document.createElement('img');
+					image.src = 'folder.svg';
+					button.appendChild(image);
+
+					var paragraph = document.createElement('p');
+					paragraph.innerHTML = linkOrFolder.title;
+					button.appendChild(paragraph);
 				}
 			}
-		}, numberOfColumns);
+
+			// Set up the click detection
+			folders = document.getElementsByClassName('folder');
+			for (var i = 0; i < folders.length; i++) {
+				folder = folders[i];
+				folder.onclick = function() {
+					newFolderID = this.dataset.id;
+					displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, newFolderID, numberOfColumns);
+				}
+			}
+
+			// Set up the back button and title
+			back = document.getElementById('back');
+			currentFolderSpan = document.getElementById('currentFolder');
+
+			if (currentFolderID != null && currentFolderID != rootFolderID) {
+				chrome.bookmarks.get(currentFolderID, function test(currentFolderNode) {
+					parentFolderID = currentFolderNode[0].parentId;
+
+					back.className = 'visible';
+					back.onclick = function() {
+						displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, parentFolderID, numberOfColumns);
+					}
+
+					currentFolderSpan.innerHTML = currentFolderNode[0].title;
+				});
+			}
+			else {
+				back.className = '';
+
+				currentFolderSpan.innerHTML = '';
+			}
+		});
 	}
 }
-
-
 
 updateTimeEverySecond(militaryTime);
 displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns);

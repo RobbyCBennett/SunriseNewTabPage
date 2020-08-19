@@ -16,7 +16,7 @@ html {
 
 
 /* Fonts */
-.fontMain, h1, h2, h3, h4, h5, h6 {
+.fontMain, h1, h2, h3, h4, h5, h6, button {
 	font-family: 'Montserrat', sans-serif;
 }
 .fontAccent {
@@ -34,8 +34,16 @@ body {
 body, h1, h2, h3, h4, h5, h6, p {
 	margin: 0;
 }
+a, button {
+	outline: none;
+}
 a {
 	text-decoration: none;
+}
+button {
+	background: none;
+	border: none;
+	padding: 0;
 	cursor: pointer;
 }
 .fadeIn {
@@ -45,6 +53,7 @@ a {
 	0% {opacity: 0;}
 	100% {opacity: 1;}
 }
+
 
 
 
@@ -117,8 +126,11 @@ h2 {
 	padding: 1rem;
 	overflow-y: auto;
 }
+#favorites .row {
+	display: flex;
+}
 #favorites .row:not(:last-child) {
-	margin-bottom: 3rem;
+	margin-bottom: 1rem;
 }
 #favorites.left .row {
 	text-align: left;
@@ -134,18 +146,24 @@ h2 {
 .favorite:not(:last-child) {
 	margin-right: 1rem;
 }
-.favorite a {
+.favorite a, .favorite button {
 	display: inline-block;
 	max-width: 100%;
 }
-.favorite a, #back {
+.favorite a, .favorite button, #back {
 	transition: all 0.125s;
 }
-.favorite a:hover, #back:hover {
+.favorite a:hover, .favorite button:hover, .favorite a:focus, .favorite button:focus {
 	transform: scale(1.1, 1.1);
 }
-.favorite a:active, #back:active {
+.favorite a:active, .favorite button:active {
 	transform: scale(1.2, 1.2);
+}
+#back:hover, #back:focus {
+	transform: scale(1.25, 1.25);
+}
+#back:active {
+	transform: scale(1.5, 1.5);
 }
 .favorite img {
 	width: 2rem;
@@ -159,9 +177,13 @@ h2 {
 	font-size: 1rem;
 	margin-top: 0.5em;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	height: 2.4em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-wrap: break-word;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 }
 #back {
 	position: absolute;
@@ -174,6 +196,21 @@ h2 {
 }
 #back img {
 	width: 1.5rem;
+}
+#currentFolder {
+	font-size: 1.5rem;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, -100%);
+
+	width: 50vw;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-wrap: break-word;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
 }
 
 
