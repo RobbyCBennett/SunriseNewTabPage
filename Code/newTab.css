@@ -47,7 +47,8 @@ button {
 	cursor: pointer;
 }
 .fadeIn {
-	animation: fadeIn 1s;
+	animation-name: fadeIn;
+	animation-duration: 1s;
 }
 @keyframes fadeIn {
 	0% {opacity: 0;}
@@ -64,7 +65,7 @@ body {
 	background-color: var(--bgColor);
 }
 .background {
-	background-image: url("mountain.jpg");
+	background-image: url("mountain.webp");
 	background-size: cover;
 	background-position: top;
 }

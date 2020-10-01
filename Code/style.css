@@ -1,3 +1,19 @@
+/* Colors */
+:root {
+	--main: #FF6C6C;
+	--mainHover: hsl(0, 100%, 61%);
+	--mainClick: hsl(0, 100%, 51%);
+
+	--text: #515151;
+
+	--border: #D6D6D6;
+
+	--bgBody: #FCFCFC;
+	--bgBox: #FFFFFF;
+}
+
+
+
 /* Fixes */
 body {
 	user-select: none;
@@ -11,6 +27,10 @@ a:focus, input:focus {
 }
 ::-webkit-scrollbar {
 	display: none;
+}
+input {
+	color: inherit;
+	font-family: inherit;
 }
 
 
@@ -26,7 +46,7 @@ section .container {
 	padding-bottom: 25px;
 }
 .box {
-	background-color: #FFF;
+	background-color: var(--bgBox);
 	padding: 25px;
 	margin-top: 25px;
 	display: inline-block;
@@ -48,14 +68,17 @@ section .container {
 	.container {
 		max-width: 850px;
 	}
+	.smallContainer {
+		max-width: 600px;
+	}
 }
 
 
 
 /* General */
 body {
-	background-color: #FCFCFC;
-	color: #515151;
+	background-color: var(--bgBody);
+	color: var(--text);
 	font-family: "Raleway", sans-serif;
 }
 a {
@@ -63,20 +86,20 @@ a {
 	display: inline-block;
 }
 a > * {
-    color: #515151;
+    color: var(--text);
 }
 a, a > *, input, #saved {
 	transition: all 250ms;
 }
 section a:hover, #banner a:hover {
-	color: #FF6C6C;
+	color: var(--mainHover);
 }
 .userIsUsingTab section a:focus, .userIsUsingTab #banner a:focus {
 	background-color: rgba(255, 194, 0, 0.25);
 }
 
 section a, header .selected, #saved, #banner a {
-	color: #FF6C6C;
+	color: var(--main);
 }
 #saved {
 	margin-top: 25px;
@@ -115,38 +138,57 @@ header h3 {
 	vertical-align: middle;
 	line-height: normal;
 }
-section p, section h3, section label {
+section p, section h3 {
 	margin-top: 15px;
 }
 label {
-	display: inline-block;
 	font-size: 1.5em;
 	line-height: 1.1em;
+	display: inline-block;
+	width: 50%;
+	margin-top: 30px;
 }
-label input {
+input {
 	vertical-align: bottom;
-}
-input, label {
 	cursor: pointer;
 }
-input[type="checkbox"] {
+
+input[type='text'], input[type='file'], .rangeNumbers {
+	width: 49%;
+}
+input[type='select'] {
+	width: 48%;
+}
+
+input[type='text'] {
+	cursor: inherit;
+	border: none;
+	border-bottom: 1.5px solid var(--border);
+	padding: 0.25em 0;
+	font-size: 1.5em;
+}
+::placeholder {
+	color: var(--border);
+}
+
+input[type='checkbox'] {
 	padding: 8px;
 	margin-right: 16px;
-	background-color: #FFF;
-	border: 1.5px solid #D6D6D6;
+	background-color: var(--bgBox);
+	border: 1.5px solid var(--border);
 	border-radius: 3px;
 	-webkit-appearance: none;
 	background-size: cover;
 }
-input[type="checkbox"]:hover, input[type="checkbox"]:checked {
-	border-color: #FF6C6C;
+input[type='checkbox']:hover, input[type='checkbox']:checked {
+	border-color: var(--main);
 }
-input[type="checkbox"]:checked {
-	background-color: #FF6C6C;
+input[type='checkbox']:checked {
+	background-color: var(--main);
 	background-image: url(checkWhite.svg);
 }
-.userIsUsingTab input[type="checkbox"]:focus::before {
-	content: "";
+.userIsUsingTab input[type='checkbox']:focus::before {
+	content: '';
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.04);
 	border-radius: 50%;
@@ -156,12 +198,81 @@ input[type="checkbox"]:checked {
 	margin-top: -16px;
 }
 
+input[type='range'] {
+	-webkit-appearance: none;
+	padding: 9px 0;
+	width: 65%;
+	background-color: transparent;
+}
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+	margin-top: -0.55em;
+	background-color: var(--main);
+}
+input[type='range']::-webkit-slider-runnable-track {
+	cursor: pointer;
+	background-color: var(--border);
+	height: 1.5px;
+}
+input[type='range']::-webkit-slider-thumb:hover, .userIsUsingTab input[type='range']:focus::-webkit-slider-thumb {
+	background-color: var(--mainHover);
+}
+.rangeNumbers {
+	display: inline-block;
+	position: relative;
+	text-align: center;
+}
+.rangeNumbersMin, .rangeNumbersMax {
+    color: var(--border);
+    position: absolute;
+    font-size: 1rem;
+	margin-top: -0.125em;
+}
+.rangeNumbersMin {
+	left: 0.125em;
+}
+.rangeNumbersMax {
+	right: 0;
+}
+
+input[type='color'] {
+	width: 0;
+	height: 0;
+	border: none;
+	background-color: white;
+	padding-bottom: 0.75rem;
+}
+input[type='color']::before {
+    background-color: inherit;
+    visibility: visible;
+    content: '';
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: -0.75rem;
+	border-radius: 50%;
+    border: 1.5px solid var(--border);
+}
+.userIsUsingTab input[type='color']:focus::after {
+	content: '';
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.04);
+	border-radius: 50%;
+	height: 2.5rem;
+	width: 2.5rem;
+	margin-left: -0.375rem;
+	margin-top: -1.625rem;
+}
+
 
 
 /* Header */
 header {
 	line-height: 70px;
-	background-color: #FFF;
+	background-color: var(--bgBox);
 }
 header a:not(:first-child) {
 	margin-left: 50px;
@@ -170,7 +281,7 @@ header a:visited {
 	color: inherit;
 }
 header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selected) {
-	color: #FF6C6C;
+	color: var(--main);
 }
 .horizontalScrolling {
 	width: 100%;
@@ -184,7 +295,7 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 /* Banner */
 #banner {
 	display: none;
-	background-color: #FFF;
+	background-color: var(--bgBox);
 	width: 100%;
 	box-shadow: 0 6px 8px -4px rgba(0, 0, 0, 0.1);
 	margin-top: -3px;
@@ -217,24 +328,24 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 		color: #DDD;
 	}
 
-	header, #banner, .box, input[type="checkbox"] {
+	header, #banner, .box, input[type='checkbox'] {
 		background-color: #35363A;
 	}
 	body {
 		background-color: #323336;
 	}
 
-	input[type="checkbox"] {
+	input[type='checkbox'] {
 		border: 1.5px solid #DDD;
 	}
-	input[type="checkbox"]:hover, input[type="checkbox"]:checked {
+	input[type='checkbox']:hover, input[type='checkbox']:checked {
 		border-color: #FFC200;
 	}
-	input[type="checkbox"]:checked {
+	input[type='checkbox']:checked {
 		background-color: #FFC200;
 		background-image: url(checkDark.svg);
 	}
-	.userIsUsingTab input[type="checkbox"]:focus::before {
+	.userIsUsingTab input[type='checkbox']:focus::before {
 		background-color: rgba(255, 255, 255, 0.1);
 	}
 

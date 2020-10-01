@@ -44,11 +44,157 @@
 	</div>
 
 	<section id="options">
-		<div class="container">
+		<div class="container smallContainer">
 			<div class="box">
-				<h2>Options</h2>
+				<h2>Theme</h2>
 
+				<label>
+					Background Image
+				</label>
+				<input id='backgroundImage' type="file" accept=".jpg, .jpeg, .png, .gif" aria-invalid="false"><br>
 
+				<label>
+					Background Overlay Color
+				</label>
+				<input id='backgroundOverlayColor' type='color'><br>
+
+				<label>
+					Background Overlay Opacity
+				</label>
+				<div class='rangeNumbers'>
+					<span class='rangeNumbersMin'></span>
+					<input id='backgroundOverlayOpacity' type='range' min='0' max='100' data-unit='%'>
+					<span class='rangeNumbersMax'></span>
+				</div><br>
+
+				<label>
+					Text Color
+				</label>
+				<input id='textColor' type='color'>
+			</div>
+
+			<div class='box'>
+				<h2>Time & Date</h2>
+
+				<label>
+					Show Time & Date
+				</label>
+				<input id='showTimeAndDate' type='checkbox'><br>
+
+				<label>
+					Main Font
+				</label>
+				<input id='mainFont' type='text' placeholder='Font name on your computer'><br>
+
+				<label>
+					Accent Font
+				</label>
+				<input id='accentFont' type='text' placeholder='Font name on your computer'><br>
+
+				<label>
+					Show Clock
+				</label>
+				<input id='showClock' type='checkbox'><br>
+
+				<label>
+					Military Time
+				</label>
+				<input id='militaryTime' type='checkbox'><br>
+
+				<label>
+					Show Seconds
+				</label>
+				<input id='showSeconds' type='checkbox'><br>
+
+				<label>
+					AM/PM
+				</label>
+				<input id='amPM' type='checkbox'><br>
+
+				<label>
+					Show Weekday
+				</label>
+				<input id='showWeekday' type='checkbox'><br>
+
+				<label>
+					Show Date
+				</label>
+				<input id='showDate' type='checkbox'><br>
+
+				<label>
+					Date Format
+				</label>
+				<input id='dateFormat' type='select'>
+			</div>
+
+			<div class='box'>
+				<h2>Bookmarks</h2>
+
+				<label>
+					Show Bookmarks
+				</label>
+				<input id='showBookmarks' type='checkbox'><br>
+
+				<label>
+					Bookmarks Bar
+				</label>
+				<input id='bookmarksBar' type='checkbox'><br>
+
+				<label>
+					Other Bookmarks
+				</label>
+				<input id='otherBookmarks' type='checkbox'><br>
+
+				<label>
+					Mobile Bookmarks
+				</label>
+				<input id='mobileBookmarks' type='checkbox'><br>
+
+				<label>
+					Icons
+				</label>
+				<input id='icons' type='checkbox'><br>
+
+				<label>
+					Labels
+				</label>
+				<input id='labels' type='checkbox'><br>
+
+				<label>
+					Number of Columns
+				</label>
+				<div class='rangeNumbers'>
+					<span class='rangeNumbersMin'></span>
+					<input id='numberOfColumns' type='range' min='1' max='50'>
+					<span class='rangeNumbersMax'></span>
+				</div><br>
+
+				<label>
+					Column Width
+				</label>
+				<div class='rangeNumbers'>
+					<span class='rangeNumbersMin'></span>
+					<input id='columnWidth' type='range' min='1' max='50'>
+					<span class='rangeNumbersMax'></span>
+				</div>
+			</div>
+
+			<div class='box'>
+				<h2>Fade In</h2>
+
+				<label>
+					Background Color
+				</label>
+				<input id='backgroundColor' type='color'><br>
+
+				<label>
+					Fade In Time
+				</label>
+				<div class='rangeNumbers'>
+					<span class='rangeNumbersMin'></span>
+					<input id='fadeInTime' type='range' min='0' max='30' data-multiplier='0.1' data-unit=' s'>
+					<span class='rangeNumbersMax'></span>
+				</div>
 			</div>
 
 			<h3 id="saved">
@@ -56,12 +202,19 @@
 				Options saved to your Google account
 			</h3>
 		</div>
+
+
 	</section>
 
 	<script src="animateSaved.js"></script>
 	<script src="options.js"></script>
-	<script src="focusStyleForAccessibility.js"></script>
+
 	<script src="banner.js"></script>
+
+	<script src="focusStyleForAccessibility.js"></script>
+
+	<script src="rangeNumbers.js"></script>
+	<script src="colorPicker.js"></script>
 </body>
 
 </html>

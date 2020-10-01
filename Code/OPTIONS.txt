@@ -1,28 +1,29 @@
 Options:
 	Theme:
 		Image:		Background Image
-		ColorA:		Background Overlay Color
+		Color:		Background Overlay Color
+		Int:		Background Overlay Opacity
 
-		ColorA:		Text Color
-		Int:		Scale (5% - 200%)
-
-		Color:		Background Color
-		Float:		Background Fade Time
-
+		Color:		Text Color
 	Time & Date:
+		Bool:		Show Time & Date
+
 		Font:		Main Font
 		Font:		Accent Font
 
-		Bool:		Clock
+		Bool:		Show Clock
 		Bool:		Military Time
-		Bool:		AM/PM
+		Bool:		Show Seconds
+		Bool:		Show AM/PM
 
-		Bool:		Weekday
+		Bool:		Show Weekday
 
-		Bool:		Date
+		Bool:		Show Date
 		Select:		Date Format
 
-	Favorites:
+	Bookmarks:
+		Bool:		Show Bookmarks
+
 		Bool:		Bookmarks Bar
 		Bool:		Other Bookmarks
 		Bool:		Mobile Bookmarks
@@ -32,4 +33,7 @@ Options:
 
 		Int:		Number of Columns
 		Int:		Column Width
-		Int:		Row Height
+
+	Fade In:
+		Color:		Background Color
+		Float:		Fade In Time
