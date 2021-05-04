@@ -47,8 +47,6 @@ function rangeNumbersLive() {
 			text = text + unit;
 			text = text + unit;
 		}
-
-		console.log(text);
 	}
 }
 

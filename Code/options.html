@@ -51,7 +51,7 @@
 				<label>
 					Background Image
 				</label>
-				<input id='backgroundImage' type="file" accept=".jpg, .jpeg, .png, .gif" aria-invalid="false"><br>
+				<input id='backgroundImage' type='file' accept='.webp .jpg, .jpeg, .png, .gif' aria-invalid='false'><br>
 
 				<label>
 					Background Overlay Color
@@ -84,12 +84,12 @@
 				<label>
 					Main Font
 				</label>
-				<input id='mainFont' type='text' placeholder='Font name on your computer'><br>
+				<input id='mainFont' type='text' placeholder='Local font name'><br>
 
 				<label>
 					Accent Font
 				</label>
-				<input id='accentFont' type='text' placeholder='Font name on your computer'><br>
+				<input id='accentFont' type='text' placeholder='Local font name'><br>
 
 				<label>
 					Show Clock
@@ -124,7 +124,12 @@
 				<label>
 					Date Format
 				</label>
-				<input id='dateFormat' type='select'>
+				<div class='select'>
+					<select id='dateFormat'>
+						<option value='m d, y'>m d, y</option>
+						<option value='d m y'>d m y</option>
+					</select>
+				</div>
 			</div>
 
 			<div class='box'>
@@ -214,6 +219,7 @@
 	<script src="focusStyleForAccessibility.js"></script>
 
 	<script src="rangeNumbers.js"></script>
+	<script src="select.js"></script>
 	<script src="colorPicker.js"></script>
 </body>
 
