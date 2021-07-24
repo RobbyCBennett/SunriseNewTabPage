@@ -1,3 +1,0 @@
-
-rangeNumbersInit();
-rangeNumbersLive();
