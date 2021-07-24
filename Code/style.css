@@ -3,6 +3,7 @@
 	--main: #FF6C6C;
 	--mainHover: hsl(0, 100%, 61%);
 	--mainClick: hsl(0, 100%, 51%);
+	--mainTranslucent: rgba(255, 108, 108, 50%);
 
 	--text: #515151;
 
@@ -80,6 +81,10 @@ body {
 	background-color: var(--bgBody);
 	color: var(--text);
 	font-family: 'Raleway', sans-serif;
+}
+::selection {
+	color: inherit;
+    background-color: var(--mainTranslucent);
 }
 a {
 	text-decoration: none;
@@ -411,7 +416,7 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-	h1, h2, h3, h4, h5, h6, p, label, a > *, input[type='text'], .select-items div, .select-selected {
+	h1, h2, h3, h4, h5, h6, p, label, a > *, input[type='text'], .rangeNumbers .rangeNumbersValue, .select-items div, .select-selected {
 		color: #DDD;
 	}
 
