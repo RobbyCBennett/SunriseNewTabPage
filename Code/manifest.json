@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "Sunset — New Tab Page",
-	"short_name": "Sunset",
+	"name": "Sunrise — New Tab Page",
+	"short_name": "Sunrise",
 	"description": "Beautiful and super customizable new tab page.",
 	"author": "Rob Bennett",
 	"icons": {
@@ -16,6 +16,7 @@
 	},
 	"permissions": [
 		"storage",
+		"unlimitedStorage",
 		"bookmarks"
 	],
 	"chrome_url_overrides" : {

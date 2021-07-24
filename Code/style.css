@@ -79,7 +79,7 @@ section .container {
 body {
 	background-color: var(--bgBody);
 	color: var(--text);
-	font-family: "Raleway", sans-serif;
+	font-family: 'Raleway', sans-serif;
 }
 a {
 	text-decoration: none;
@@ -172,6 +172,9 @@ input[type='text'] {
 	color: var(--border);
 }
 
+input[type=file] {
+	position: relative;
+}
 input[type=file]::-webkit-file-upload-button {
 	display: none;
     cursor: pointer;
@@ -272,6 +275,19 @@ input[type='color']::before {
 	width: 2.5rem;
 	margin-left: -0.375rem;
 	margin-top: -1.625rem;
+}
+
+input[type='text'].error, input[type='file'].error {
+	color: var(--main);
+}
+input[type='file'].error::after {
+	content: 'Error';
+	color: white;
+    background-color: var(--main);
+    position: absolute;
+	right: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
 }
 
 /* Swiped from https://www.w3schools.com/howto/howto_custom_select.asp */

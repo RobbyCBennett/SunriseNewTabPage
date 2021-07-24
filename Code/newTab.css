@@ -71,9 +71,11 @@ body {
 	background-color: var(--bgColor);
 }
 .background {
-	background-image: url("mountain.webp");
-	background-size: cover;
-	background-position: top;
+	background-image: url('mountain.webp');
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 .overlay {
 	width: 100%;

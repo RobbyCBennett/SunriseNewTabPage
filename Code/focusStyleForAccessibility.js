@@ -1,5 +1,5 @@
 function focusStyleForAccessibility(event) {
-	if (event.key === "Tab") { // The tab key
+	if (event.key === 'Tab') { // The tab key
 		document.body.classList.add('userIsUsingTab');
 		window.removeEventListener('keydown', focusStyleForAccessibility);
 	}
