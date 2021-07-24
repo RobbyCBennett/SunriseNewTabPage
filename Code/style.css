@@ -153,31 +153,44 @@ input {
 	cursor: pointer;
 }
 
-input[type='text'], input[type='file'] {
+input[type='text'] {
 	width: 42%;
-}
-input[type='text'], input[type='file'] {
 	color: var(--text);
 	background-color: transparent;
 	border: none;
 	border-bottom: 1.5px solid var(--border);
 	padding: 0.25em 1em;
 	font-size: 1.5em;
-}
-
-input[type='text'] {
 	cursor: inherit;
 }
+
+input[type='text'], input[type='file'] {
+	background-color: transparent;
+	padding: 0.25em 1em;
+	font-size: 1.5em;
+}
+
 ::placeholder {
 	color: var(--border);
 }
 
 input[type=file] {
+	width: 39%;
+	color: transparent;
+	border: none;
 	position: relative;
+	background-position: center;
+    background-size: cover;
+	background-repeat: no-repeat;
 }
 input[type=file]::-webkit-file-upload-button {
 	display: none;
     cursor: pointer;
+}
+
+input[type=file].dropping {
+	/* box-shadow: inset 1rem 0 0 var(--main); */
+	box-shadow: inset 250.5px 0 0 var(--main);
 }
 
 input[type='checkbox'] {
@@ -275,19 +288,6 @@ input[type='color']::before {
 	width: 2.5rem;
 	margin-left: -0.375rem;
 	margin-top: -1.625rem;
-}
-
-input[type='text'].error, input[type='file'].error {
-	color: var(--main);
-}
-input[type='file'].error::after {
-	content: 'Error';
-	color: white;
-    background-color: var(--main);
-    position: absolute;
-	right: 1em;
-	padding-left: 1em;
-	padding-right: 1em;
 }
 
 /* Swiped from https://www.w3schools.com/howto/howto_custom_select.asp */

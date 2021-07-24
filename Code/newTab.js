@@ -9,6 +9,19 @@ rootFolderID = null;
 currentFolderID = null;
 numberOfColumns = 5;
 
+function loadOptions() {
+	// Load image
+	bg = document.getElementById('background');
+	chrome.storage.local.get('backgroundImage', result => {
+		console.log(result);
+		if (result['backgroundImage']) {
+			bg.style.backgroundImage = 'url(' + result['backgroundImage'] + ')';
+		} else {
+			bg.style.backgroundImage = 'url(mountain.webp)';
+		}
+	});
+}
+
 function updateTime(militaryTime) {
 	// Time
 	hourSpan = document.getElementById('hour');
@@ -222,5 +235,6 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 	}
 }
 
+loadOptions();
 updateTimeEverySecond(militaryTime);
 displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns);
