@@ -242,6 +242,14 @@ input[type='range']::-webkit-slider-runnable-track {
 input[type='range']::-webkit-slider-thumb:hover, .userIsUsingTab input[type='range']:focus::-webkit-slider-thumb {
 	background-color: var(--mainHover);
 }
+.rangeNumbers .rangeNumbersValue {
+	color: var(--text);
+	font-size: 1rem;
+	position: absolute;
+	margin-top: -1.5em;
+	left: 50%;
+	transform: translateX(-50%);
+}
 .rangeNumbers {
 	width: 49%;
 	display: inline-block;
@@ -403,7 +411,7 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-	h1, h2, h3, h4, h5, h6, p, label, a > *, input[type='text'], input[type='file'], .select-items div, .select-selected {
+	h1, h2, h3, h4, h5, h6, p, label, a > *, input[type='text'], .select-items div, .select-selected {
 		color: #DDD;
 	}
 

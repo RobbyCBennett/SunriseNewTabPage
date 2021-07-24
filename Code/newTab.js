@@ -9,11 +9,49 @@ rootFolderID = null;
 currentFolderID = null;
 numberOfColumns = 5;
 
+function defaultOptions() {
+	chrome.storage.sync.get('alreadyConfigured', result => {
+		if (!result['alreadyConfigured']) {
+			chrome.storage.sync.set({
+				alreadyConfigured: true,
+
+				// Theme
+				backgroundOverlayColor: '#000000',
+				backgroundOverlayOpacity: 35,
+				textColor: '#FFFFFF',
+				mainFont: 'Montserrat',
+				accentFont: 'Marck Script',
+
+				// Time & Date
+				showTime: true,
+				showSeconds: false,
+				showAMPM: false,
+				showWeekday: true,
+				showDate: true,
+				militaryTime: false,
+				dateFormat: 'm d, y',
+
+				// Bookmarks
+				showBookmarks: true,
+				showIcons: true,
+				showLabels: true,
+				allowBookmarksBar: true,
+				allowOtherBookmarks: false,
+				allowMobileBookmarks: false,
+				numberOfColumns: 5,
+				columnWidth: 8,
+
+			}, result => {
+				console.log('Thanks for installing!');
+			});
+		}
+	});
+}
+
 function loadOptions() {
 	// Load image
 	bg = document.getElementById('background');
 	chrome.storage.local.get('backgroundImage', result => {
-		console.log(result);
 		if (result['backgroundImage']) {
 			bg.style.backgroundImage = 'url(' + result['backgroundImage'] + ')';
 		} else {
@@ -235,6 +273,7 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 	}
 }
 
+defaultOptions();
 loadOptions();
 updateTimeEverySecond(militaryTime);
 displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns);
