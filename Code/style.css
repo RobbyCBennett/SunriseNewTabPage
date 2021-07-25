@@ -86,6 +86,9 @@ body {
 	color: inherit;
     background-color: var(--mainTranslucent);
 }
+.iconDarkMode {
+	display: none;
+}
 a {
 	text-decoration: none;
 	display: inline-block;
@@ -418,6 +421,13 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 @media (prefers-color-scheme: dark) {
 	h1, h2, h3, h4, h5, h6, p, label, a > *, input[type='text'], .rangeNumbers .rangeNumbersValue, .select-items div, .select-selected {
 		color: #DDD;
+	}
+
+	.iconLightMode {
+		display: none;
+	}
+	.iconDarkMode {
+		display: inline-block;
 	}
 
 	header, #banner, .box, input[type='checkbox'] {
