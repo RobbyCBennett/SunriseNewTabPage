@@ -7,10 +7,19 @@ html {
 
 /* Colors */
 :root {
-	--color: #FFFFFF;
+	/* Theme */
+	--textColor: #FFFFFF;
 	--bgColor: #FFFFFF;
-	--overlayColor: rgba(0, 0, 0, 0.35);
+	--overlayColor: rgba(0, 0, 0, 0);
 	--scrollbarColor: rgba(255, 255, 255, 0.25);
+
+	--mainFont: 'Montserrat', sans-serif;
+	--accentFont: 'Marck Script', sans-serif;
+
+	--showIcons: inline;
+	--showLabels: -webkit-box;
+
+	--columnWidth: 8rem;
 }
 @media (prefers-color-scheme: dark) {
 	:root {
@@ -22,11 +31,11 @@ html {
 
 /* Fonts */
 .fontMain, h1, h2, h3, h4, h5, h6, button {
-	font-family: 'Montserrat', sans-serif;
+	font-family: var(--mainFont);
 	font-weight: normal;
 }
 .fontAccent {
-	font-family: 'Marck Script', sans-serif;
+	font-family: var(--accentFont);
 	font-weight: normal;
 	margin-bottom: 0.125em;
 }
@@ -60,14 +69,15 @@ button {
 	0% {opacity: 0;}
 	100% {opacity: 1;}
 }
-
-
+.hidden {
+	display: none;
+}
 
 
 
 /* Body */
 body {
-	color: var(--color);
+	color: var(--textColor);
 	background-color: var(--bgColor);
 }
 .background {
@@ -106,10 +116,10 @@ h1 {
 h2 {
 	font-size: 1.5rem;
 }
-#clock {
+#time {
 	letter-spacing: 0.05em;
 }
-#clock span:not(:first-child):not(#amPM)::before {
+#time span:not(:first-child):not(#amPM)::before {
     content: ':';
 }
 #amPM::before {
@@ -149,7 +159,7 @@ h2 {
 .favorite {
 	display: inline-block;
 	text-align: center;
-	width: 8rem;
+	width: var(--columnWidth);
 }
 .favorite:not(:last-child) {
 	margin-right: 1rem;
@@ -176,19 +186,20 @@ h2 {
 .favorite img {
 	width: 2rem;
 	height: auto;
+	display: var(--showIcons);
 }
 .favorite.folder img, .favorite.blank img #back {
 	opacity: 0.85;
 }
 .favorite p {
-	color: var(--color);
+	color: var(--textColor);
 	font-size: 1rem;
 	margin-top: 0.5em;
 
 	height: 2.4em;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: -webkit-box;
+	display: var(--showLabels);
 	word-wrap: break-word;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
@@ -236,7 +247,7 @@ h2 {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: var(--scrollbarColor);;
+	background: var(--scrollbarColor);
 	opacity: 0.25;
 	border-radius: 0.125rem;
 }

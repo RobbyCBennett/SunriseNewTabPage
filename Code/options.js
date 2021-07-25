@@ -284,9 +284,6 @@ function saveOptions() {
 	saveOptionChecked('allowMobileBookmarks');
 	saveOptionValue('numberOfColumns');
 	saveOptionValue('columnWidth');
-
-	// Cool api for checking if a font is valid
-	// document.fonts.check('12px courier');
 }
 
 updateColorPickersOnUnfocus();

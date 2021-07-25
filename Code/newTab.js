@@ -1,13 +1,15 @@
-// Variables
-militaryTime = false;
-
-bookmarksVisible = true;
-bookmarksBarVisible = true;
-otherBookmarksVisible = false;
-mobileBookmarksVisible = false;
 rootFolderID = null;
 currentFolderID = null;
-numberOfColumns = 5;
+
+// Swiped from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+function hexToRGB(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
 
 function defaultOptions() {
 	chrome.storage.sync.get('alreadyConfigured', result => {
@@ -49,7 +51,7 @@ function defaultOptions() {
 }
 
 function loadOptions() {
-	// Load image
+	// Background Image
 	bg = document.getElementById('background');
 	chrome.storage.local.get('backgroundImage', result => {
 		if (result['backgroundImage']) {
@@ -57,6 +59,76 @@ function loadOptions() {
 		} else {
 			bg.style.backgroundImage = 'url(mountain.webp)';
 		}
+	});
+
+	// Load options
+	chrome.storage.sync.get(null, options => {
+		// Overlay Color & Opacity
+		color = hexToRGB(options.backgroundOverlayColor);
+		fullOverlayColor = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b + ', ' + options.backgroundOverlayOpacity / 100 + ')';
+		document.getElementById('overlay').style.backgroundColor = fullOverlayColor;
+
+		// Text Color
+		cssVariables = document.documentElement.style;
+		cssVariables.setProperty('--color', options.textColor);
+
+		// Main Font
+		cssVariables.setProperty('--mainFont', options.mainFont);
+
+		// Accent Font
+		cssVariables.setProperty('--accentFont', options.accentFont);
+
+		// Show Time
+		if (options.showTime === false) {
+			document.getElementById('time').classList.add('hidden');
+		}
+
+		// Show Seconds
+		if (options.showSeconds === false) {
+			document.getElementById('second').classList.add('hidden');
+		}
+
+		// Show AP/PM
+		if (options.showAMPM === false) {
+			document.getElementById('amPM').classList.add('hidden');
+		}
+
+		// Show Weekday
+		if (options.showWeekday === false) {
+			document.getElementById('weekday').classList.add('hidden');
+		}
+
+		// Show Date
+		if (options.showDate === false) {
+			document.getElementById('date').classList.add('hidden');
+		}
+
+		// Date Format
+		if (options.dateFormat === 'd m y') {
+			document.getElementById('date').innerHTML = '<span id="day"></span><span id="month"></span><span id="year"></span>'
+		}
+
+		// Show Bookmarks
+		if (options.showBookmarks === false) {
+			document.getElementById('favoritesContainer').classList.add('hidden');
+		}
+
+		// Show Icons
+		if (options.showIcons === false) {
+			cssVariables.setProperty('--showIcons', 'none');
+		}
+
+		// Show Labels
+		if (options.showLabels === false) {
+			cssVariables.setProperty('--showLabels', 'none');
+		}
+
+		// Column Width
+		cssVariables.setProperty('--columnWidth', options.columnWidth + 'rem');
+
+		// Load the UI
+		updateTimeEverySecond(options.militaryTime);
+		displayBookmarks(options.showBookmarks, options.allowBookmarksBar, options.allowOtherBookmarks, options.allowMobileBookmarks, currentFolderID, options.numberOfColumns);
 	});
 }
 
@@ -160,8 +232,8 @@ function updateTimeEverySecond(militaryTime) {
 
 
 // Bookmarks
-function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns) {
-	if (bookmarksVisible) {
+function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, currentFolderID, numberOfColumns) {
+	if (showBookmarks) {
 		// Clear the current view of favorites
 		favorites = document.getElementById('favorites');
 		favorites.innerHTML = '';
@@ -170,14 +242,14 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 		if (rootFolderID == null) {
 			rootFolderID = '0';
 
-			if (bookmarksBarVisible && !otherBookmarksVisible && !mobileBookmarksVisible) {
+			if (allowBookmarksBar && !allowOtherBookmarks && !allowMobileBookmarks) {
 				rootFolderID = '1';
 			}
-			else if (!bookmarksBarVisible && otherBookmarksVisible && !mobileBookmarksVisible) {
+			else if (!allowBookmarksBar && allowOtherBookmarks && !allowMobileBookmarks) {
 				rootFolderID = '2';
 			}
-			else if (!bookmarksBarVisible && !otherBookmarksVisible && mobileBookmarksVisible) {
-				rootFolderID = '2';
+			else if (!allowBookmarksBar && !allowOtherBookmarks && allowMobileBookmarks) {
+				rootFolderID = '3';
 			}
 
 			currentFolderID = rootFolderID;
@@ -220,21 +292,30 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 				}
 				// Folder
 				else {
-					var favorite = document.createElement('div');
-					favorite.className = 'favorite folder';
-					favorite.dataset.id = linkOrFolder.id;
-					row.appendChild(favorite);
+					shouldMakeThisFolder = true;
+					if (currentFolderID == 0) {
+						if ((linkOrFolder.id == 1 && !allowBookmarksBar) || (linkOrFolder.id == 2 && !allowOtherBookmarks) || (linkOrFolder.id == 3 && !allowMobileBookmarks)) {
+							shouldMakeThisFolder = false;
+						}
+					}
 
-					var button = document.createElement('button');
-					favorite.appendChild(button);
+					if (shouldMakeThisFolder) {
+						var favorite = document.createElement('div');
+						favorite.className = 'favorite folder';
+						favorite.dataset.id = linkOrFolder.id;
+						row.appendChild(favorite);
 
-					var image = document.createElement('img');
-					image.src = 'folder.svg';
-					button.appendChild(image);
+						var button = document.createElement('button');
+						favorite.appendChild(button);
 
-					var paragraph = document.createElement('p');
-					paragraph.innerHTML = linkOrFolder.title;
-					button.appendChild(paragraph);
+						var image = document.createElement('img');
+						image.src = 'folder.svg';
+						button.appendChild(image);
+
+						var paragraph = document.createElement('p');
+						paragraph.innerHTML = linkOrFolder.title;
+						button.appendChild(paragraph);
+					}
 				}
 			}
 
@@ -244,7 +325,7 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 				folder = folders[i];
 				folder.onclick = function() {
 					newFolderID = this.dataset.id;
-					displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, newFolderID, numberOfColumns);
+					displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, newFolderID, numberOfColumns);
 				}
 			}
 
@@ -258,7 +339,7 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 
 					back.className = 'visible';
 					back.onclick = function() {
-						displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, parentFolderID, numberOfColumns);
+						displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, parentFolderID, numberOfColumns);
 					}
 
 					currentFolderSpan.innerHTML = currentFolderNode[0].title;
@@ -275,5 +356,3 @@ function displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksV
 
 defaultOptions();
 loadOptions();
-updateTimeEverySecond(militaryTime);
-displayBookmarks(bookmarksVisible, bookmarksBarVisible, otherBookmarksVisible, mobileBookmarksVisible, currentFolderID, numberOfColumns);
