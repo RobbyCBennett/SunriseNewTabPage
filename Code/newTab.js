@@ -23,6 +23,7 @@ function defaultOptions() {
 				textColor: '#FFFFFF',
 				mainFont: 'Montserrat',
 				accentFont: 'Marck Script',
+				showSettingsButton: true,
 
 				// Time & Date
 				showTime: true,
@@ -77,6 +78,11 @@ function loadOptions() {
 
 		// Accent Font
 		cssVariables.setProperty('--accentFont', options.accentFont);
+
+		// Show Settings Button
+		if (options.showSettingsButton === false) {
+			document.getElementById('settings').classList.add('hidden');
+		}
 
 		// Show Time
 		if (options.showTime === false) {
@@ -354,5 +360,12 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 	}
 }
 
+function settingsLink() {
+	document.getElementById('settings').onclick = function() {
+		chrome.tabs.create({'url': '/options.html' });
+	};
+}
+
 defaultOptions();
 loadOptions();
+settingsLink();

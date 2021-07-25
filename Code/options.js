@@ -193,6 +193,7 @@ function loadOptions() {
 	loadOptionValue('textColor');
 	loadOptionValue('mainFont');
 	loadOptionValue('accentFont');
+	loadOptionChecked('showSettingsButton');
 
 	// Time & Date
 	loadOptionChecked('showTime');
@@ -265,6 +266,7 @@ function saveOptions() {
 	saveOptionValue('textColor');
 	saveOptionValue('mainFont');
 	saveOptionValue('accentFont');
+	saveOptionChecked('showSettingsButton');
 
 	// Time & Date
 	saveOptionChecked('showTime');

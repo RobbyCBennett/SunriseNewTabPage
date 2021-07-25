@@ -166,12 +166,14 @@ h2 {
 }
 .favorite a, .favorite button {
 	display: inline-block;
+}
+.favorite a, .favorite button, #settings {
 	max-width: 100%;
 }
-.favorite a, .favorite button, #back {
+.favorite a, .favorite button, #back, #settings {
 	transition: all 0.125s;
 }
-.favorite a:hover, .favorite button:hover, .favorite a:focus, .favorite button:focus {
+.favorite a:hover, .favorite button:hover, .favorite a:focus, .favorite button:focus, #settings:hover, #settings:focus {
 	transform: scale(1.1, 1.1);
 }
 .favorite a:active, .favorite button:active {
@@ -184,11 +186,13 @@ h2 {
 	transform: scale(1.5, 1.5);
 }
 .favorite img {
-	width: 2rem;
-	height: auto;
 	display: var(--showIcons);
 }
-.favorite.folder img, .favorite.blank img #back {
+.favorite img, #settings img {
+	width: 2rem;
+	height: auto;
+}
+.favorite.folder img, .favorite.blank img #back, #settings img {
 	opacity: 0.85;
 }
 .favorite p {
@@ -230,6 +234,11 @@ h2 {
 	word-wrap: break-word;
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
+}
+#settings {
+	position: absolute;
+	bottom: 2rem;
+	right: 2rem;
 }
 
 
