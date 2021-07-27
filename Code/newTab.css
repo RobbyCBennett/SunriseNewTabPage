@@ -167,13 +167,13 @@ h2 {
 .favorite a, .favorite button {
 	display: inline-block;
 }
-.favorite a, .favorite button, #settings {
+.favorite a, .favorite button, #settings, #edit {
 	max-width: 100%;
 }
-.favorite a, .favorite button, #back, #settings {
+.favorite a, .favorite button, #back, #settings, #edit {
 	transition: all 0.125s;
 }
-.favorite a:hover, .favorite button:hover, .favorite a:focus, .favorite button:focus, #settings:hover, #settings:focus {
+.favorite a:hover, .favorite button:hover, .favorite a:focus, .favorite button:focus, #settings:hover, #settings:focus, #edit:hover, #edit:focus {
 	transform: scale(1.1, 1.1);
 }
 .favorite a:active, .favorite button:active {
@@ -188,11 +188,11 @@ h2 {
 .favorite img {
 	display: var(--showIcons);
 }
-.favorite img, #settings img {
+.favorite img, #settings img, #edit img {
 	width: 2rem;
 	height: auto;
 }
-.favorite.folder img, .favorite.blank img #back, #settings img {
+.favorite.folder img, .favorite.blank img #back, #settings img, #edit img {
 	opacity: 0.85;
 }
 .favorite p {
@@ -239,6 +239,11 @@ h2 {
 	position: absolute;
 	bottom: 2rem;
 	right: 2rem;
+}
+#edit {
+	position: absolute;
+	bottom: 2rem;
+	left: 2rem;
 }
 
 
