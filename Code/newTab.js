@@ -11,12 +11,21 @@ function hexToRGB(hex) {
 	} : null;
 }
 
-function defaultOptions() {
-	chrome.storage.sync.get('alreadyConfigured', result => {
-		if (!result['alreadyConfigured']) {
-			chrome.storage.sync.set({
-				alreadyConfigured: true,
+function loadBackgroundImage() {
+	bg = document.getElementById('background');
+	chrome.storage.local.get('backgroundImage', result => {
+		if (result['backgroundImage']) {
+			bg.style.backgroundImage = 'url(' + result['backgroundImage'] + ')';
+		} else {
+			bg.style.backgroundImage = 'url(mountain.webp)';
+		}
+	});
+}
 
+function defaultOptions() {
+	chrome.storage.sync.get(null, options => {
+		if (Object.keys(options).length == 0) {
+			chrome.storage.sync.set({
 				// Theme
 				backgroundOverlayColor: '#000000',
 				backgroundOverlayOpacity: 35,
@@ -45,24 +54,15 @@ function defaultOptions() {
 				columnWidth: 8,
 
 			}, result => {
-				console.log('Thanks for installing!');
+				loadOptions();
 			});
+		} else {
+			loadOptions();
 		}
 	});
 }
 
 function loadOptions() {
-	// Background Image
-	bg = document.getElementById('background');
-	chrome.storage.local.get('backgroundImage', result => {
-		if (result['backgroundImage']) {
-			bg.style.backgroundImage = 'url(' + result['backgroundImage'] + ')';
-		} else {
-			bg.style.backgroundImage = 'url(mountain.webp)';
-		}
-	});
-
-	// Load options
 	chrome.storage.sync.get(null, options => {
 		// Overlay Color & Opacity
 		color = hexToRGB(options.backgroundOverlayColor);
@@ -366,6 +366,6 @@ function settingsLink() {
 	};
 }
 
+loadBackgroundImage();
 defaultOptions();
-loadOptions();
 settingsLink();

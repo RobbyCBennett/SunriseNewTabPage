@@ -185,6 +185,46 @@ function loadOptionChecked(string) {
 	});
 }
 
+function defaultOptions() {
+	chrome.storage.sync.get(null, options => {
+		if (Object.keys(options).length == 0) {
+			chrome.storage.sync.set({
+				// Theme
+				backgroundOverlayColor: '#000000',
+				backgroundOverlayOpacity: 35,
+				textColor: '#FFFFFF',
+				mainFont: 'Montserrat',
+				accentFont: 'Marck Script',
+				showSettingsButton: true,
+
+				// Time & Date
+				showTime: true,
+				showSeconds: false,
+				showAMPM: false,
+				showWeekday: true,
+				showDate: true,
+				militaryTime: false,
+				dateFormat: 'm d, y',
+
+				// Bookmarks
+				showBookmarks: true,
+				showIcons: true,
+				showLabels: true,
+				allowBookmarksBar: true,
+				allowOtherBookmarks: false,
+				allowMobileBookmarks: false,
+				numberOfColumns: 5,
+				columnWidth: 8,
+
+			}, result => {
+				loadOptions();
+			});
+		} else {
+			loadOptions();
+		}
+	});
+}
+
 function loadOptions() {
 	// Theme
 	loadOptionImage('backgroundImage');
@@ -289,5 +329,5 @@ function saveOptions() {
 }
 
 updateColorPickersOnUnfocus();
-loadOptions();
+defaultOptions();
 saveOptions();
