@@ -9,7 +9,7 @@ html {
 :root {
 	/* Theme */
 	--textColor: #FFFFFF;
-	--bgColor: #FFFFFF;
+	--bgColor: #000;
 	--overlayColor: rgba(0, 0, 0, 0);
 	--scrollbarColor: rgba(255, 255, 255, 0.25);
 
@@ -20,6 +20,11 @@ html {
 	--showLabels: -webkit-box;
 
 	--columnWidth: 8rem;
+}
+@media (prefers-color-scheme: light) {
+	:root {
+		--bgColor: #FFF;
+	}
 }
 @media (prefers-color-scheme: dark) {
 	:root {
