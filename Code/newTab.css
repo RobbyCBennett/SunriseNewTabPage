@@ -23,7 +23,7 @@ html {
 }
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bgColor: #35363A;
+		--bgColor: #000;
 	}
 }
 

@@ -80,13 +80,13 @@ function loadOptions() {
 		cssVariables.setProperty('--accentFont', options.accentFont);
 
 		// Show Settings Button
-		if (options.showSettingsButton === false) {
-			document.getElementById('settings').classList.add('hidden');
+		if (options.showSettingsButton === true) {
+			document.getElementById('settings').classList.remove('hidden');
 		}
 
 		// Show Time
-		if (options.showTime === false) {
-			document.getElementById('time').classList.add('hidden');
+		if (options.showTime === true) {
+			document.getElementById('time').classList.remove('hidden');
 		}
 
 		// Show Seconds
@@ -105,8 +105,8 @@ function loadOptions() {
 		}
 
 		// Show Date
-		if (options.showDate === false) {
-			document.getElementById('date').classList.add('hidden');
+		if (options.showDate === true) {
+			document.getElementById('date').classList.remove('hidden');
 		}
 
 		// Date Format
