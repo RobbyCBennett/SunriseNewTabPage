@@ -86,7 +86,7 @@ body {
 	color: inherit;
     background-color: var(--mainTranslucent);
 }
-.iconDarkMode {
+.logoDarkMode {
 	display: none;
 }
 a {
@@ -415,10 +415,10 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 		color: #DDD;
 	}
 
-	.iconLightMode {
+	.logoLightMode {
 		display: none;
 	}
-	.iconDarkMode {
+	.logoDarkMode {
 		display: inline-block;
 	}
 
