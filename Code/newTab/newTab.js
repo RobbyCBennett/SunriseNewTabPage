@@ -17,7 +17,7 @@ function loadBackgroundImage() {
 		if (result['backgroundImage']) {
 			bg.style.backgroundImage = 'url(' + result['backgroundImage'] + ')';
 		} else {
-			bg.style.backgroundImage = 'url(mountain.webp)';
+			bg.style.backgroundImage = 'url(/assets/images/mountain.webp)';
 		}
 	});
 }

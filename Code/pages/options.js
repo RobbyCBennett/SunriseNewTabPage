@@ -173,7 +173,7 @@ function loadOptionImage(string) {
 		if (results[string]) {
 			optionElement.style.backgroundImage = 'url(' + results[string] + ')';
 		} else {
-			optionElement.style.backgroundImage = 'url(mountain.webp)';
+			optionElement.style.backgroundImage = 'url(/assets/images/mountain.webp)';
 		}
 	});
 }

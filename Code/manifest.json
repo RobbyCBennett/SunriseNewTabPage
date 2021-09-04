@@ -5,14 +5,14 @@
 	"description": "Beautiful and super customizable new tab page.",
 	"author": "Rob Bennett",
 	"icons": {
-		"128": "icon128.png",
-		"48": "icon48.png",
-		"16": "icon16.png"
+		"128": "/assets/logos/icon128.png",
+		"48": "/assets/logos/icon48.png",
+		"16": "/assets/logos/icon16.png"
 	},
 	"version": "1.4",
-	"options_page": "options.html",
+	"options_page": "/options.html",
 	"browser_action": {
-		"default_icon": "iconColor.png"
+		"default_icon": "/assets/logos/iconColor.png"
 	},
 	"permissions": [
 		"storage",
@@ -20,11 +20,11 @@
 		"bookmarks"
 	],
 	"chrome_url_overrides" : {
-		"newtab": "newTab.html"
+		"newtab": "/newTab/newTab.html"
 	},
 	"background": {
 		"scripts": [
-			"background.js"
+			"/background.js"
 		]
 	}
 }
