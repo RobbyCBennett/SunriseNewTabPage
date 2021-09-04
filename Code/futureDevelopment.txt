@@ -1,14 +1,14 @@
-1.	Navigate bookmarks
+Navigate bookmarks
 	Move: arrows
 	Select: space/enter
 	Back: backspace
 
-2.	Custom CSS
+Custom CSS
 	Setting for custom user CSS
 
-3.	Rename, delete, move bookmarks
+Rename, delete, move bookmarks
 	Edit button will unlock move
 
-4.	Search bar
+Search bar
 	Hopefully it will work for URLs, searches, with autosuggestion
 	For fullscreen use
