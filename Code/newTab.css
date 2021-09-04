@@ -200,6 +200,12 @@ h2 {
 .favorite a:hover, .favorite button:hover, .favorite a:focus, .favorite button:focus, #settings:hover, #settings:focus, #edit:hover, #edit:focus {
 	transform: scale(1.1, 1.1);
 }
+.favorite >:first-child {
+	opacity: 50%;
+}
+.favorite >:focus, .favorite >:hover {
+	opacity: 100%;
+}
 .favorite a:active, .favorite button:active {
 	transform: scale(1.2, 1.2);
 }

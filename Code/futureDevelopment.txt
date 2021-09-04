@@ -1,6 +1,4 @@
-Navigate bookmarks
-	Move: arrows
-	Back: backspace
+Fix text color
 
 Custom CSS
 	Setting for custom user CSS

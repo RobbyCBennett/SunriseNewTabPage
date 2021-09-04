@@ -144,8 +144,6 @@ function loadOptions() {
 			cssVariables.setProperty('--showLabels', 'none');
 		}
 
-		console.log(options.bookmarkAlignment === 'right');
-
 		// Bookmark Alignment
 		if (options.bookmarkAlignment === 'center') {
 			document.getElementById('favorites').classList.add('center');
@@ -306,6 +304,7 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 				row = document.getElementById('row' + rowI);
 				if (linkOrFolder.url != null) {
 					var favorite = document.createElement('div');
+					favorite.dataset.id = 'link' + String(i);
 					favorite.className = 'favorite website';
 					row.appendChild(favorite);
 
@@ -382,6 +381,8 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 
 				currentFolderSpan.innerHTML = '';
 			}
+
+			focusOnBookmarks();
 		});
 	}
 }
@@ -392,6 +393,117 @@ function settingsLink() {
 	};
 }
 
+function navigate() {
+	document.onkeydown = function () {
+		// Get key
+		key = event.key;
+
+		// Get row and column
+		rowElement = event.path[2];
+		if (! rowElement.classList || ! rowElement.classList.contains('row'))
+			return;
+		row = parseInt(rowElement.id.split('row')[1]);
+		rowCount = event.path[3].children.length;
+		columns = rowElement.children;
+		colCount = columns.length;
+		columnId = event.path[1].dataset.id;
+		col = 0;
+		for (col = 0; col < columns.length; col++) {
+			if (columns[col].dataset.id == columnId) {
+				break;
+			}
+		};
+
+		// Get alignment
+		alignment = event.path[3].className;
+
+		// Handle each key
+		if (key == 'ArrowLeft') {
+			// Move left
+			if (col > 0) {
+				newFocus = document.querySelector('#row' + String(row) + ' .favorite:nth-child(' + String(col) + ') :first-child');
+				newFocus.focus();
+			}
+
+			// Move up & far right
+			else if (row > 0) {
+				newFocus = document.querySelector('#row' + String(row-1) + ' .favorite:last-child :first-child');
+				newFocus.focus();
+			}
+		}
+		else if (key == 'ArrowRight') {
+			// Move right
+			if (col < colCount - 1) {
+				newFocus = document.querySelector('#row' + String(row) + ' .favorite:nth-child(' + String(col+2) + ') :first-child');
+				newFocus.focus();
+			}
+
+			// Move down & far left
+			else if (row < rowCount - 1) {
+				newFocus = document.querySelector('#row' + String(row+1) + ' .favorite:nth-child(1) :first-child');
+				newFocus.focus();
+			}
+		}
+		else if (key == 'ArrowUp') {
+			// Move up
+			if (row > 0) {
+				// Figure out the new column
+				newCol = col+1;
+				newColCount = document.querySelector('#row' + String(row-1)).children.length;
+				if (newColCount != colCount) {
+					if (alignment == 'center') {
+						newCol = col+1 - Math.ceil((colCount-newColCount)/2);
+					} else if (alignment == 'right') {
+						newCol = col+1 - (colCount - newColCount);
+					}
+				}
+
+				newFocus = document.querySelector('#row' + String(row-1) + ' .favorite:nth-child(' + String(newCol) + ') :first-child');
+				newFocus.focus();
+			}
+		}
+		else if (key == 'ArrowDown') {
+			// Move down
+			if (row < rowCount - 1) {
+				// Figure out the new column
+				newCol = col+1;
+				newColCount = document.querySelector('#row' + String(row+1)).children.length;
+				if (newColCount != colCount) {
+					if (alignment == 'left' && newCol > newColCount) {
+						newCol = newColCount;
+					} else if (alignment == 'center') {
+						newCol = col+1 - Math.ceil((colCount-newColCount)/2);
+						if (newCol < 1)
+							newCol = 1;
+						else if (newCol > newColCount)
+							newCol = newColCount;
+					} else if (alignment == 'right') {
+						newCol = col+1 - (colCount - newColCount);
+						if (newCol < 1)
+							newCol = 1;
+					}
+				}
+
+				newFocus = document.querySelector('#row' + String(row+1) + ' .favorite:nth-child(' + String(newCol) + ') :first-child');
+				newFocus.focus();
+			}
+		}
+		else if (key == 'Backspace' || key == 'Escape') {
+			backButton = document.getElementById('back');
+			if (backButton.classList.contains('visible'))
+				backButton.click();
+		}
+	};
+}
+
+function focusOnBookmarks() {
+	newFocus = document.querySelector('#row0 .favorite:first-child :first-child');
+	if (newFocus) {
+		newFocus.focus();
+	}
+}
+
 loadBackgroundImage();
 defaultOptions();
 settingsLink();
+navigate();
