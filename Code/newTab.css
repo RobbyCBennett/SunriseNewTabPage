@@ -172,13 +172,13 @@ h2 {
 	margin-bottom: 1rem;
 }
 #favorites.left .row {
-	justify-contentk: left;
+	justify-content: left;
 }
 #favorites.center .row {
-	justify-contentk: left;
+	justify-content: center;
 }
 #favorites.right .row {
-	justify-contentk: right;
+	justify-content: right;
 }
 .favorite {
 	display: inline-block;

@@ -1,4 +1,4 @@
-Bookmark alignment
+Fix dropdown loading
 
 Navigate bookmarks
 	Move: arrows

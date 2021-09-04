@@ -49,6 +49,7 @@ function defaultOptions() {
 				showBookmarks: true,
 				showIcons: true,
 				showLabels: true,
+				bookmarkAlignment: 'left',
 				allowBookmarksBar: true,
 				allowOtherBookmarks: false,
 				allowMobileBookmarks: false,
@@ -141,6 +142,17 @@ function loadOptions() {
 		// Show Labels
 		if (options.showLabels === false) {
 			cssVariables.setProperty('--showLabels', 'none');
+		}
+
+		console.log(options.bookmarkAlignment === 'right');
+
+		// Bookmark Alignment
+		if (options.bookmarkAlignment === 'center') {
+			document.getElementById('favorites').classList.add('center');
+		} else if (options.bookmarkAlignment === 'right') {
+			document.getElementById('favorites').classList.add('right');
+		} else {
+			document.getElementById('favorites').classList.add('left');
 		}
 
 		// Column Width

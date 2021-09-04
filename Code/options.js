@@ -10,6 +10,9 @@ function selectDropdownInit() {
 		/* For each element, create a new DIV that will act as the selected item: */
 		a = document.createElement('DIV');
 		a.setAttribute('class', 'select-selected');
+		if (selElmnt.selectedIndex) {
+			selElmnt.selectedIndex = 0;
+		}
 		a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
 		x[i].appendChild(a);
 		/* For each element, create a new DIV that will contain the option list: */
@@ -212,6 +215,7 @@ function defaultOptions() {
 				showBookmarks: true,
 				showIcons: true,
 				showLabels: true,
+				bookmarkAlignment: 'left',
 				allowBookmarksBar: true,
 				allowOtherBookmarks: false,
 				allowMobileBookmarks: false,
@@ -250,8 +254,9 @@ function loadOptions() {
 
 	// Bookmarks
 	loadOptionChecked('showBookmarks');
-	loadOptionChecked('showBookmarks');
+	loadOptionChecked('showIcons');
 	loadOptionChecked('showLabels');
+	loadOptionValue('bookmarkAlignment');
 	loadOptionChecked('allowBookmarksBar');
 	loadOptionChecked('allowOtherBookmarks');
 	loadOptionChecked('allowMobileBookmarks');
@@ -327,6 +332,7 @@ function saveOptions() {
 	saveOptionChecked('showBookmarks');
 	saveOptionChecked('showIcons');
 	saveOptionChecked('showLabels');
+	saveOptionValue('bookmarkAlignment');
 	saveOptionChecked('allowBookmarksBar');
 	saveOptionChecked('allowOtherBookmarks');
 	saveOptionChecked('allowMobileBookmarks');
