@@ -10,7 +10,7 @@ function selectDropdownInit() {
 		/* For each element, create a new DIV that will act as the selected item: */
 		a = document.createElement('DIV');
 		a.setAttribute('class', 'select-selected');
-		if (selElmnt.selectedIndex) {
+		if (selElmnt.selectedIndex == -1) {
 			selElmnt.selectedIndex = 0;
 		}
 		a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;

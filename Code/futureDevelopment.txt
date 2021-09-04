@@ -1,8 +1,5 @@
-Fix dropdown loading
-
 Navigate bookmarks
 	Move: arrows
-	Select: space/enter
 	Back: backspace
 
 Custom CSS
