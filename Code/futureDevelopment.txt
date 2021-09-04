@@ -1,4 +1,4 @@
-Fix text color
+Color the icons
 
 Custom CSS
 	Setting for custom user CSS

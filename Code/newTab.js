@@ -74,7 +74,7 @@ function loadOptions() {
 
 		// Text Color
 		cssVariables = document.documentElement.style;
-		cssVariables.setProperty('--color', options.textColor);
+		cssVariables.setProperty('--textColor', options.textColor);
 
 		// Main Font
 		cssVariables.setProperty('--mainFont', options.mainFont);
