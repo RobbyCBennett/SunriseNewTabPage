@@ -195,6 +195,7 @@ function defaultOptions() {
 				textColor: '#FFFFFF',
 				mainFont: 'Montserrat',
 				accentFont: 'Marck Script',
+				verticallyCenterEverything: false,
 				showSettingsButton: true,
 
 				// Time & Date
@@ -233,6 +234,7 @@ function loadOptions() {
 	loadOptionValue('textColor');
 	loadOptionValue('mainFont');
 	loadOptionValue('accentFont');
+	loadOptionChecked('verticallyCenterEverything');
 	loadOptionChecked('showSettingsButton');
 
 	// Time & Date
@@ -306,6 +308,7 @@ function saveOptions() {
 	saveOptionValue('textColor');
 	saveOptionValue('mainFont');
 	saveOptionValue('accentFont');
+	saveOptionChecked('verticallyCenterEverything');
 	saveOptionChecked('showSettingsButton');
 
 	// Time & Date

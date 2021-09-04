@@ -32,6 +32,7 @@ function defaultOptions() {
 				textColor: '#FFFFFF',
 				mainFont: 'Montserrat',
 				accentFont: 'Marck Script',
+				verticallyCenterEverything: false,
 				showSettingsButton: true,
 
 				// Time & Date
@@ -78,6 +79,15 @@ function loadOptions() {
 
 		// Accent Font
 		cssVariables.setProperty('--accentFont', options.accentFont);
+
+		// Vertically Center Everything
+		if (options.verticallyCenterEverything === true) {
+			document.getElementById('timeAndDate').classList.add('topThird');
+			document.getElementById('favoritesContainer').classList.add('bottomThird');
+		} else {
+			document.getElementById('timeAndDate').classList.add('verticalCenter');
+			document.getElementById('favoritesContainer').classList.add('bottom');
+		}
 
 		// Show Settings Button
 		if (options.showSettingsButton === true) {

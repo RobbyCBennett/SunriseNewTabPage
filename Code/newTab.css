@@ -84,6 +84,7 @@ button {
 body {
 	color: var(--textColor);
 	background-color: var(--bgColor);
+	overflow-y: hidden;
 }
 .background {
 	background-position: center;
@@ -108,6 +109,18 @@ body {
 	bottom: 25%;
 	left: 50%;
 	transform: translate(-50%, 70%);
+}
+.topThird {
+	position: absolute;
+	top: 33%;
+	left: 50%;
+	transform: translate(-50%, -33%);
+}
+.bottomThird {
+	position: absolute;
+	bottom: 33%;
+	left: 50%;
+	transform: translate(-50%, 33%);
 }
 
 

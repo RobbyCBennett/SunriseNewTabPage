@@ -1,3 +1,6 @@
+Zoom level
+	For the new tab, not the settings
+
 Navigate bookmarks
 	Move: arrows
 	Select: space/enter
