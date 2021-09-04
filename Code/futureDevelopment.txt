@@ -1,10 +1,7 @@
-Color the icons
-
 Custom CSS
 	Setting for custom user CSS
 
 Rename, delete, move bookmarks
-	Edit button will unlock move
 
 Search bar
 	Hopefully it will work for URLs, searches, with autosuggestion

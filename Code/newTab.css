@@ -215,15 +215,18 @@ h2 {
 #back:active {
 	transform: scale(1.5, 1.5);
 }
-.favorite img {
+.favorite svg {
 	display: var(--showIcons);
 }
-.favorite img, #settings img, #edit img {
+.favorite svg, #settings svg, #edit svg {
 	width: 2rem;
 	height: auto;
 }
-.favorite.folder img, .favorite.blank img #back, #settings img, #edit img {
+.favorite.folder svg, .favorite.blank svg #back, #settings svg, #edit svg {
 	opacity: 0.85;
+}
+svg {
+	fill: var(--textColor);
 }
 .favorite p {
 	color: var(--textColor);
@@ -247,7 +250,7 @@ h2 {
 #back.visible {
 	display: inherit;
 }
-#back img {
+#back svg {
 	width: 1.5rem;
 }
 #currentFolder {

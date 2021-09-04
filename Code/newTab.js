@@ -312,10 +312,7 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 					anchor.href = linkOrFolder.url;
 					favorite.appendChild(anchor);
 
-					var image = document.createElement('img');
-					image.src = 'website.svg';
-					// image.src = 'chrome://favicon/' + linkOrFolder.url;
-					anchor.appendChild(image);
+					anchor.innerHTML = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M12,0C5.4,0,0,5.4,0,12s5.4,12,12,12s12-5.4,12-12S18.6,0,12,0z M10.8,21.5c-4.7-0.6-8.4-4.6-8.4-9.5 c0-0.7,0.1-1.5,0.3-2.1l5.7,5.7v1.2c0,1.3,1.1,2.4,2.4,2.4V21.5z M19.1,18.5c-0.3-1-1.2-1.7-2.3-1.7h-1.2v-3.6 c0-0.7-0.5-1.2-1.2-1.2H7.2V9.6h2.4c0.7,0,1.2-0.5,1.2-1.2V6h2.4c1.3,0,2.4-1.1,2.4-2.4V3.1c3.5,1.4,6,4.9,6,8.9 C21.6,14.5,20.6,16.8,19.1,18.5z"/></svg>'
 
 					var paragraph = document.createElement('p');
 					paragraph.innerHTML = linkOrFolder.title;
@@ -339,9 +336,7 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 						var button = document.createElement('button');
 						favorite.appendChild(button);
 
-						var image = document.createElement('img');
-						image.src = 'folder.svg';
-						button.appendChild(image);
+						button.innerHTML = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M9.6,2.4H2.4C1.1,2.4,0,3.5,0,4.8l0,14.4c0,1.3,1.1,2.4,2.4,2.4h19.2c1.3,0,2.4-1.1,2.4-2.4v-12 c0-1.3-1.1-2.4-2.4-2.4H12L9.6,2.4z"/></svg>'
 
 						var paragraph = document.createElement('p');
 						paragraph.innerHTML = linkOrFolder.title;
