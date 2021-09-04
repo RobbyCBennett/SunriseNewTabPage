@@ -195,6 +195,7 @@ function defaultOptions() {
 				textColor: '#FFFFFF',
 				mainFont: 'Montserrat',
 				accentFont: 'Marck Script',
+				zoomLevel: 100,
 				verticallyCenterEverything: false,
 				showSettingsButton: true,
 
@@ -234,6 +235,7 @@ function loadOptions() {
 	loadOptionValue('textColor');
 	loadOptionValue('mainFont');
 	loadOptionValue('accentFont');
+	loadOptionValue('zoomLevel');
 	loadOptionChecked('verticallyCenterEverything');
 	loadOptionChecked('showSettingsButton');
 
@@ -308,6 +310,7 @@ function saveOptions() {
 	saveOptionValue('textColor');
 	saveOptionValue('mainFont');
 	saveOptionValue('accentFont');
+	saveOptionValue('zoomLevel');
 	saveOptionChecked('verticallyCenterEverything');
 	saveOptionChecked('showSettingsButton');
 

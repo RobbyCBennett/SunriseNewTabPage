@@ -1,11 +1,4 @@
-/* Scale */
-html {
-	font-size: 100%;
-}
-
-
-
-/* Colors */
+/* Variables */
 :root {
 	/* Theme */
 	--textColor: #FFFFFF;
@@ -15,6 +8,8 @@ html {
 
 	--mainFont: 'Montserrat', sans-serif;
 	--accentFont: 'Marck Script', sans-serif;
+
+	--zoomLevel: 100%;
 
 	--showIcons: inline;
 	--showLabels: -webkit-box;
@@ -30,6 +25,13 @@ html {
 	:root {
 		--bgColor: #000;
 	}
+}
+
+
+
+/* Scale */
+html {
+	font-size: var(--zoomLevel);
 }
 
 
@@ -170,10 +172,13 @@ h2 {
 	margin-bottom: 1rem;
 }
 #favorites.left .row {
-	text-align: left;
+	justify-contentk: left;
+}
+#favorites.center .row {
+	justify-contentk: left;
 }
 #favorites.right .row {
-	text-align: right;
+	justify-contentk: right;
 }
 .favorite {
 	display: inline-block;

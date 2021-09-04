@@ -32,6 +32,7 @@ function defaultOptions() {
 				textColor: '#FFFFFF',
 				mainFont: 'Montserrat',
 				accentFont: 'Marck Script',
+				zoomLevel: 100,
 				verticallyCenterEverything: false,
 				showSettingsButton: true,
 
@@ -79,6 +80,9 @@ function loadOptions() {
 
 		// Accent Font
 		cssVariables.setProperty('--accentFont', options.accentFont);
+
+		// Accent Font
+		cssVariables.setProperty('--zoomLevel', String(options.zoomLevel) + '%');
 
 		// Vertically Center Everything
 		if (options.verticallyCenterEverything === true) {

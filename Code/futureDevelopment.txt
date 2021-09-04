@@ -1,5 +1,4 @@
-Zoom level
-	For the new tab, not the settings
+Bookmark alignment
 
 Navigate bookmarks
 	Move: arrows
