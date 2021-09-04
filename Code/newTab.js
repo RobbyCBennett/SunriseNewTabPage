@@ -23,9 +23,9 @@ function loadBackgroundImage() {
 }
 
 function defaultOptions() {
-	chrome.storage.sync.get(null, options => {
+	chrome.storage.local.get(null, options => {
 		if (Object.keys(options).length == 0) {
-			chrome.storage.sync.set({
+			chrome.storage.local.set({
 				// Theme
 				backgroundOverlayColor: '#000000',
 				backgroundOverlayOpacity: 35,
@@ -63,7 +63,7 @@ function defaultOptions() {
 }
 
 function loadOptions() {
-	chrome.storage.sync.get(null, options => {
+	chrome.storage.local.get(null, options => {
 		// Overlay Color & Opacity
 		color = hexToRGB(options.backgroundOverlayColor);
 		fullOverlayColor = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b + ', ' + options.backgroundOverlayOpacity / 100 + ')';

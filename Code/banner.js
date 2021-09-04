@@ -24,11 +24,11 @@ function displayBanner() {
 	// First time message
 	firstTimeMessage = 'Thanks for installing my extension!';
 
-	chrome.storage.sync.get(null,
+	chrome.storage.local.get(null,
 		function (values) {
 			if (!values.firstTime) {
 				document.getElementById('bannerMessage').innerHTML = firstTimeMessage;
-				chrome.storage.sync.set({ firstTime: true });
+				chrome.storage.local.set({ firstTime: true });
 			}
 		}
 	);

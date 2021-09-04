@@ -47,12 +47,18 @@
 	<section id='options'>
 		<div class='container smallContainer'>
 			<div class='box'>
+				<h2>Autosave</h2>
+				<p>
+					Your settings are automatically saved to this device.
+				</p>
+			</div>
+			<div class='box'>
 				<h2>Theme</h2>
 
 				<label>
 					Background Image
 				</label>
-				<input id='backgroundImage' type='file' accept='.webp .jpg, .jpeg, .png, .gif' aria-invalid='false' title='.webp or .jpg are recommended for large images. Try dragging and dropping if the file picker has problems.'><br>
+				<input id='backgroundImage' type='file' accept='.webp, .jpg, .jpeg, .png, .gif' aria-invalid='false' title='.webp or .jpg are recommended for large images'><br>
 
 				<label>
 					Background Overlay Color
@@ -187,17 +193,11 @@
 					<span class='rangeNumbersMax'></span>
 				</div>
 			</div>
-
-			<h3 id='saved'>
-				<img src='checkRed.svg' width='16px' height='16px'>
-				Options saved to your Google account
-			</h3>
 		</div>
 
 
 	</section>
 
-	<script src='animateSaved.js'></script>
 	<script src='options.js'></script>
 
 	<script src='banner.js'></script>

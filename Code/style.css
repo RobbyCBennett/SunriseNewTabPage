@@ -96,7 +96,7 @@ a {
 a > * {
     color: var(--text);
 }
-a, a > *, input, #saved {
+a, a > *, input {
 	transition: all 250ms;
 }
 section a:hover, #banner a:hover {
@@ -106,16 +106,8 @@ section a:hover, #banner a:hover {
 	background-color: rgba(255, 194, 0, 0.25);
 }
 
-section a, header .selected, #saved, #banner a {
+section a, header .selected, #banner a {
 	color: var(--main);
-}
-#saved {
-	margin-top: 25px;
-	opacity: 0;
-}
-#saved img {
-	margin-left: 25px;
-	margin-right: 20px;
 }
 h1, h2, h3 {
 	font-weight: normal;

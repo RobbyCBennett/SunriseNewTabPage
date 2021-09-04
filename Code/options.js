@@ -42,7 +42,7 @@ function selectDropdownInit() {
 				}
 				h.click();
 
-				chrome.storage.sync.set({ [s.id]: s.value });
+				chrome.storage.local.set({ [s.id]: s.value });
 			});
 			b.appendChild(c);
 		}
@@ -175,20 +175,20 @@ function loadOptionImage(string) {
 	});
 }
 function loadOptionValue(string) {
-	chrome.storage.sync.get(string, results => {
+	chrome.storage.local.get(string, results => {
 		document.getElementById(string).value = results[string];
 	});
 }
 function loadOptionChecked(string) {
-	chrome.storage.sync.get(string, results => {
+	chrome.storage.local.get(string, results => {
 		document.getElementById(string).checked = results[string];
 	});
 }
 
 function defaultOptions() {
-	chrome.storage.sync.get(null, options => {
+	chrome.storage.local.get(null, options => {
 		if (Object.keys(options).length == 0) {
-			chrome.storage.sync.set({
+			chrome.storage.local.set({
 				// Theme
 				backgroundOverlayColor: '#000000',
 				backgroundOverlayOpacity: 35,
@@ -255,7 +255,7 @@ function loadOptions() {
 	loadOptionValue('columnWidth');
 
 	// Wait for Chrome storage, then update inputs
-	chrome.storage.sync.get('blah', results => {
+	chrome.storage.local.get('blah', results => {
 		rangeNumbersInit();
 		rangeNumbersLive();
 		updateColorPickers();
@@ -290,12 +290,12 @@ function saveOptionImage(string) {
 }
 function saveOptionValue(string) {
 	document.getElementById(string).onchange = event => {
-		chrome.storage.sync.set({ [string]: event.target.value });
+		chrome.storage.local.set({ [string]: event.target.value });
 	}
 }
 function saveOptionChecked(string) {
 	document.getElementById(string).onchange = event => {
-		chrome.storage.sync.set({ [string]: event.target.checked });
+		chrome.storage.local.set({ [string]: event.target.checked });
 	}
 }
 function saveOptions() {
