@@ -400,8 +400,10 @@ function navigate() {
 
 		// Get row and column
 		rowElement = event.path[2];
-		if (! rowElement.classList || ! rowElement.classList.contains('row'))
+		if (! rowElement.classList || ! rowElement.classList.contains('row')) {
+			focusOnBookmarks();
 			return;
+		}
 		row = parseInt(rowElement.id.split('row')[1]);
 		rowCount = event.path[3].children.length;
 		columns = rowElement.children;
