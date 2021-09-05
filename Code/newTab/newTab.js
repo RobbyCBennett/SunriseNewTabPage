@@ -144,6 +144,11 @@ function loadOptions() {
 			cssVariables.setProperty('--showLabels', 'none');
 		}
 
+		// Dim Favorites
+		if (options.dimBookmarks === true) {
+			cssVariables.setProperty('--dimBookmarks', '50%');
+		}
+
 		// Bookmark Alignment
 		if (options.bookmarkAlignment === 'center') {
 			document.getElementById('favorites').classList.add('center');

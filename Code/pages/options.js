@@ -219,6 +219,7 @@ function defaultOptions() {
 				allowBookmarksBar: true,
 				allowOtherBookmarks: false,
 				allowMobileBookmarks: false,
+				dimBookmarks: false,
 				numberOfColumns: 5,
 				columnWidth: 8,
 
@@ -260,6 +261,7 @@ function loadOptions() {
 	loadOptionChecked('allowBookmarksBar');
 	loadOptionChecked('allowOtherBookmarks');
 	loadOptionChecked('allowMobileBookmarks');
+	loadOptionChecked('dimBookmarks');
 	loadOptionValue('numberOfColumns');
 	loadOptionValue('columnWidth');
 
@@ -336,6 +338,7 @@ function saveOptions() {
 	saveOptionChecked('allowBookmarksBar');
 	saveOptionChecked('allowOtherBookmarks');
 	saveOptionChecked('allowMobileBookmarks');
+	saveOptionChecked('dimBookmarks');
 	saveOptionValue('numberOfColumns');
 	saveOptionValue('columnWidth');
 }

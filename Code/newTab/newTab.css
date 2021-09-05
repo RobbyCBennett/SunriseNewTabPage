@@ -1,6 +1,5 @@
 /* Variables */
 :root {
-	/* Theme */
 	--textColor: #FFFFFF;
 	--bgColor: #000;
 	--overlayColor: rgba(0, 0, 0, 0);
@@ -201,7 +200,7 @@ h2 {
 	transform: scale(1.1, 1.1);
 }
 .favorite >:first-child {
-	opacity: 50%;
+	opacity: var(--dimBookmarks);
 }
 .favorite >:focus, .favorite >:hover {
 	opacity: 100%;
