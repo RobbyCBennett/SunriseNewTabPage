@@ -11,6 +11,10 @@ function hexToRGB(hex) {
 	} : null;
 }
 
+function isRealClick(e) {
+	return (e.screenX && e.screenX != 0) && (e.screenY && e.screenY != 0);
+}
+
 function loadBackgroundImage() {
 	bg = document.getElementById('background');
 	chrome.storage.local.get('backgroundImage', result => {
@@ -163,7 +167,7 @@ function loadOptions() {
 
 		// Load the UI
 		updateTimeEverySecond(options.militaryTime);
-		displayBookmarks(options.showBookmarks, options.allowBookmarksBar, options.allowOtherBookmarks, options.allowMobileBookmarks, currentFolderID, options.numberOfColumns);
+		displayBookmarks(options.showBookmarks, options.allowBookmarksBar, options.allowOtherBookmarks, options.allowMobileBookmarks, currentFolderID, options.numberOfColumns, false);
 	});
 }
 
@@ -267,7 +271,7 @@ function updateTimeEverySecond(militaryTime) {
 
 
 // Bookmarks
-function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, currentFolderID, numberOfColumns) {
+function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, currentFolderID, numberOfColumns, shouldFocus) {
 	if (showBookmarks) {
 		// Clear the current view of favorites
 		favorites = document.getElementById('favorites');
@@ -355,8 +359,9 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 			for (var i = 0; i < folders.length; i++) {
 				folder = folders[i];
 				folder.onclick = function() {
+					shouldFocus = ! isRealClick(event);
 					newFolderID = this.dataset.id;
-					displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, newFolderID, numberOfColumns);
+					displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, newFolderID, numberOfColumns, shouldFocus);
 				}
 			}
 
@@ -370,7 +375,9 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 
 					back.className = 'visible';
 					back.onclick = function() {
-						displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, parentFolderID, numberOfColumns);
+						shouldFocus = ! isRealClick(event);
+						console.log(event.screenX, event.screenY);
+						displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, parentFolderID, numberOfColumns, shouldFocus);
 					}
 
 					currentFolderSpan.innerHTML = currentFolderNode[0].title;
@@ -382,7 +389,9 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 				currentFolderSpan.innerHTML = '';
 			}
 
-			focusOnBookmarks();
+			if (shouldFocus) {
+				focusOnBookmarks();
+			}
 		});
 	}
 }
