@@ -382,7 +382,6 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 					back.className = 'visible';
 					back.onclick = function() {
 						shouldFocus = ! isRealClick(event);
-						console.log(event.screenX, event.screenY);
 						displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, parentFolderID, numberOfColumns, shouldFocus);
 					}
 

@@ -9,7 +9,7 @@
 		"48": "/assets/logos/logo48.png",
 		"16": "/assets/logos/logo16.png"
 	},
-	"version": "1.4",
+	"version": "1.5",
 	"options_page": "/options.html",
 	"browser_action": {
 		"default_icon": "/assets/logos/logoColor.png"
