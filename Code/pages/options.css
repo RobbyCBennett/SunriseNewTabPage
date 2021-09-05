@@ -3,7 +3,7 @@
 	--main: #FF6C6C;
 	--mainHover: hsl(0, 100%, 61%);
 	--mainClick: hsl(0, 100%, 51%);
-	--mainTranslucent: rgba(255, 108, 108, 50%);
+	--mainTranslucent: rgba(255, 108, 108, 25%);
 
 	--text: #515151;
 
@@ -19,7 +19,7 @@
 body {
 	user-select: none;
 }
-a:focus, input:focus {
+a:focus, input:focus, textarea:focus {
 	outline: none;
 }
 * {
@@ -55,7 +55,7 @@ section .container {
 	vertical-align: top;
 	width: calc(100% - 50px);
 }
-.box, header, .select-arrow-active, .select-items:not(.select-hide) {
+.box, header, .select-arrow-active, .select-items:not(.select-hide), textarea {
 	box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.1);
 }
 .split {
@@ -298,7 +298,17 @@ input[type='color']::before {
 	margin-top: -1.625rem;
 }
 
-/* Swiped from https://www.w3schools.com/howto/howto_custom_select.asp */
+textarea {
+	border: none;
+	background-color: var(--bgBody);
+	margin-top: 1rem;
+	width: calc(100% - 2rem);
+	padding: 1rem;
+	resize: none;
+	color: var(--text)
+}
+
+/* Select styling swiped from https://www.w3schools.com/howto/howto_custom_select.asp */
 .select {
 	width: 49%;
 	font-size: 1rem;
@@ -411,6 +421,11 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
+	:root {
+		--text: #FFF;
+		--bgBody: #323336;
+	}
+
 	h1, h2, h3, h4, h5, h6, p, label, a > *, input[type='text'], .rangeNumbers .rangeNumbersValue, .select-items div, .select-selected {
 		color: #DDD;
 	}
@@ -424,9 +439,6 @@ header a:hover > *:not(.selected), .userIsUsingTab header a:focus > *:not(.selec
 
 	header, #banner, .box, input[type='checkbox'] {
 		background-color: #35363A;
-	}
-	body {
-		background-color: #323336;
 	}
 
 	input[type='checkbox'] {

@@ -60,6 +60,9 @@ function defaultOptions() {
 				numberOfColumns: 5,
 				columnWidth: 8,
 
+				// Advanced
+				customCSS: '',
+
 			}, result => {
 				loadOptions();
 			});
@@ -164,6 +167,9 @@ function loadOptions() {
 
 		// Column Width
 		cssVariables.setProperty('--columnWidth', options.columnWidth + 'rem');
+
+		// Advanced
+		document.getElementById('customCSS').innerHTML = options.customCSS;
 
 		// Load the UI
 		updateTimeEverySecond(options.militaryTime);

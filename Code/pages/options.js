@@ -223,6 +223,9 @@ function defaultOptions() {
 				numberOfColumns: 5,
 				columnWidth: 8,
 
+				// Advanced
+				customCSS: '',
+
 			}, result => {
 				loadOptions();
 			});
@@ -264,6 +267,9 @@ function loadOptions() {
 	loadOptionChecked('dimBookmarks');
 	loadOptionValue('numberOfColumns');
 	loadOptionValue('columnWidth');
+
+	// Advanced
+	loadOptionValue('customCSS');
 
 	// Wait for Chrome storage, then update inputs
 	chrome.storage.local.get('blah', results => {
@@ -341,6 +347,9 @@ function saveOptions() {
 	saveOptionChecked('dimBookmarks');
 	saveOptionValue('numberOfColumns');
 	saveOptionValue('columnWidth');
+
+	// Advanced
+	saveOptionValue('customCSS');
 }
 
 updateColorPickersOnUnfocus();
