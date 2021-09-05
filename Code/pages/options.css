@@ -306,6 +306,9 @@ textarea {
 	padding: 1rem;
 	resize: none;
 	color: var(--text)
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
 }
 
 /* Select styling swiped from https://www.w3schools.com/howto/howto_custom_select.asp */

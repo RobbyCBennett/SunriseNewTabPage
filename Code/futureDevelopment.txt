@@ -1,7 +1,3 @@
-Custom user CSS
-	Tabs
-	Autosave on paste
-
 Rename, delete, move bookmarks
 
 Custom user CSS syntax highlighting

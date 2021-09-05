@@ -305,9 +305,15 @@ function saveOptionImage(string) {
 		optionElement.classList.remove('dropping');
 	}
 }
-function saveOptionValue(string) {
+function saveOptionValue(string, savingText=false) {
 	document.getElementById(string).onchange = event => {
 		chrome.storage.local.set({ [string]: event.target.value });
+	}
+
+	if (savingText) {
+		document.getElementById(string).oninput = event => {
+			chrome.storage.local.set({ [string]: event.target.value });
+		}
 	}
 }
 function saveOptionChecked(string) {
@@ -321,8 +327,8 @@ function saveOptions() {
 	saveOptionValue('backgroundOverlayColor');
 	saveOptionValue('backgroundOverlayOpacity');
 	saveOptionValue('textColor');
-	saveOptionValue('mainFont');
-	saveOptionValue('accentFont');
+	saveOptionValue('mainFont', true);
+	saveOptionValue('accentFont', true);
 	saveOptionValue('zoomLevel');
 	saveOptionChecked('verticallyCenterEverything');
 	saveOptionChecked('showSettingsButton');
@@ -349,9 +355,27 @@ function saveOptions() {
 	saveOptionValue('columnWidth');
 
 	// Advanced
-	saveOptionValue('customCSS');
+	saveOptionValue('customCSS', true);
+}
+
+function tabInTextareas() {
+	var textareas = document.getElementsByTagName('textarea');
+	var count = textareas.length;
+
+	for (var i=0; i<count; i++) {
+		textareas[i].onkeydown = function(e) {
+			if (e.keyCode == 9 || e.which == 9) {
+				e.preventDefault();
+
+				var s = this.selectionStart;
+				this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+				this.selectionEnd = s+1; 
+			}
+		}
+	}
 }
 
 updateColorPickersOnUnfocus();
 defaultOptions();
 saveOptions();
+tabInTextareas();
