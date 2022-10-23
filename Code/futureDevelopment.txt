@@ -1,5 +1,0 @@
-Rename, delete, move bookmarks
-
-Better custom CSS experience
-	Syntax highlighting
-	Auto indentation

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+	<head>
+		<meta charset='utf-8'>
+		<title>New Tab</title>
+
+		<link rel='stylesheet' type='text/css' href='newTab.css'>
+		<link href='https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300&display=swap' rel='stylesheet'>
+	</head>
+	<body class='fontMain'>
+		<div id='background' class='background fadeIn'>
+			<div id='overlay' class='overlay center'>
+				<!-- <button id='edit'>
+					<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M0,19v5h5L19.7,9.3l-5-5L0,19z M23.6,5.4c0.5-0.5,0.5-1.4,0-1.9l-3.1-3.1c-0.5-0.5-1.4-0.5-1.9,0l-2.4,2.4l5,5	C21.2,7.8,23.6,5.4,23.6,5.4z"/></svg>
+				</button> -->
+
+				<button id='settings' class='hidden'>
+					<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve"><path class="st0" d="M20.9,13.2C21,12.8,21,12.4,21,12c0-0.4,0-0.8-0.1-1.2l2.5-2c0.2-0.2,0.3-0.5,0.2-0.8l-2.4-4.1 c-0.1-0.3-0.5-0.4-0.7-0.3l-3,1.2c-0.6-0.5-1.3-0.9-2-1.2L15,0.5C14.9,0.2,14.7,0,14.4,0H9.6C9.3,0,9.1,0.2,9,0.5L8.6,3.7 C7.8,4,7.1,4.4,6.5,4.9l-3-1.2C3.3,3.6,3,3.7,2.8,3.9L0.4,8.1C0.3,8.3,0.3,8.7,0.6,8.8l2.5,2C3,11.2,3,11.6,3,12s0,0.8,0.1,1.2 l-2.5,2c-0.2,0.2-0.3,0.5-0.1,0.8l2.4,4.2c0.1,0.3,0.5,0.4,0.7,0.3l3-1.2c0.6,0.5,1.3,0.9,2,1.2L9,23.5C9.1,23.8,9.3,24,9.6,24h4.8 c0.3,0,0.5-0.2,0.6-0.5l0.4-3.2c0.7-0.3,1.4-0.7,2-1.2l3,1.2c0.3,0.1,0.6,0,0.7-0.3l2.4-4.1c0.2-0.3,0.1-0.6-0.2-0.8L20.9,13.2z M12,16.5c-2.5,0-4.5-2-4.5-4.5s2-4.5,4.5-4.5s4.5,2,4.5,4.5S14.5,16.5,12,16.5z"/></svg>
+				</button>
+
+				<div id='timeAndDate'>
+					<h1 id='time' class='hidden'>
+						<span id='hour'></span><span id='minute'></span><span id='second'></span><span id='amPM'></span>
+					</h1>
+					<h1 id='weekday' class='fontAccent'></h1>
+					<h2 id='date' class='hidden'>
+						<span id='month'></span><span id='day'></span><span id='year'></span>
+					</h2>
+				</div>
+
+				<div id='favoritesContainer'>
+					<button id='back'>
+						<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M24,10.5H5.7l8.4-8.4L12,0L0,12l12,12l2.1-2.1l-8.4-8.4H24V10.5z"/></svg>
+					</button>
+					<p id='currentFolder'>
+
+					</p>
+					<div id='favorites'>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<style id='customCSS'></style>
+	</body>
+</html>
+
+<script src='/newTab/newTab.js'></script>
