@@ -375,8 +375,8 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 			folders = document.getElementsByClassName('folder');
 			for (let i = 0; i < folders.length; i++) {
 				folder = folders[i];
-				folder.onclick = function() {
-					shouldFocus = ! isRealClick(event);
+				folder.onclick = function(e) {
+					shouldFocus = ! isRealClick(e);
 					newFolderID = this.dataset.id;
 					displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, newFolderID, numberOfColumns, shouldFocus);
 				}
@@ -391,8 +391,8 @@ function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks,
 					parentFolderID = currentFolderNode[0].parentId;
 
 					back.className = 'visible';
-					back.onclick = function() {
-						shouldFocus = ! isRealClick(event);
+					back.onclick = function(e) {
+						shouldFocus = ! isRealClick(e);
 						displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, parentFolderID, numberOfColumns, shouldFocus);
 					}
 
@@ -419,21 +419,21 @@ async function settingsLink() {
 }
 
 async function navigate() {
-	document.onkeydown = function () {
+	document.onkeydown = function (e) {
 		// Get key
-		key = event.key;
+		key = e.key;
 
 		// Get row and column
-		rowElement = event.path[2];
+		rowElement = e.composedPath()[2];
 		if (! rowElement.classList || ! rowElement.classList.contains('row')) {
 			focusOnBookmarks();
 			return;
 		}
 		row = parseInt(rowElement.id.split('row')[1]);
-		rowCount = event.path[3].children.length;
+		rowCount = e.composedPath()[3].children.length;
 		columns = rowElement.children;
 		colCount = columns.length;
-		columnId = event.path[1].dataset.id;
+		columnId = e.composedPath()[1].dataset.id;
 		col = 0;
 		for (col = 0; col < columns.length; col++) {
 			if (columns[col].dataset.id == columnId) {
@@ -442,7 +442,7 @@ async function navigate() {
 		};
 
 		// Get alignment
-		alignment = event.path[3].className;
+		alignment = e.composedPath()[3].className;
 
 		// Handle each key
 		if (key == 'ArrowLeft') {
