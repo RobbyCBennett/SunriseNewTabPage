@@ -41,9 +41,9 @@ Options
   * Show Icons
   * Show Labels
   * Bookmark Alignment
-  * Allow Bookmarks Bar
-  * Allow Other Bookmarks
-  * Allow Mobile Bookmarks
+  * Use Bookmarks Bar
+  * Use Other Bookmarks
+  * Use Mobile Bookmarks
   * Dim Bookmarks
   * Number of Columns
   * Column Width

@@ -5,14 +5,14 @@
 	"description": "Beautiful and super customizable new tab page.",
 	"author": "Robby Bennett",
 	"icons": {
-		"16": "/assets/icon16.png",
-		"32": "/assets/icon32.png",
-		"48": "/assets/icon48.png",
-		"128": "/assets/icon128.png"
+		"16": "/assets/iconGray16.png",
+		"32": "/assets/iconGray32.png",
+		"48": "/assets/iconGray48.png",
+		"128": "/assets/iconGray128.png"
 	},
 	"version": "3.0",
 	"action": {
-		"default_icon": "/assets/iconColor.png",
+		"default_icon": "/assets/icon128.png",
 		"default_popup": "/options/options.html#popup"
 	},
 	"options_ui": {

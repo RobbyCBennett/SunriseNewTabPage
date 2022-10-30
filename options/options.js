@@ -1,381 +1,215 @@
-// Make the inputs be better
-// This function was from https://www.w3schools.com/howto/howto_custom_select.asp
-function selectDropdownInit() {
-	var x, i, j, l, ll, selElmnt, a, b, c;
-	x = document.getElementsByClassName('select');
-	l = x.length;
-	for (i = 0; i < l; i++) {
-		selElmnt = x[i].getElementsByTagName('select')[0];
-		ll = selElmnt.length;
-		/* For each element, create a new DIV that will act as the selected item: */
-		a = document.createElement('DIV');
-		a.setAttribute('class', 'select-selected');
-		if (selElmnt.selectedIndex == -1) {
-			selElmnt.selectedIndex = 0;
-		}
-		a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-		x[i].appendChild(a);
-		/* For each element, create a new DIV that will contain the option list: */
-		b = document.createElement('DIV');
-		b.setAttribute('class', 'select-items select-hide');
-		for (j = 0; j < ll; j++) {
-			/* For each option in the original select element,
-			create a new DIV that will act as an option item: */
-			c = document.createElement('DIV');
-			c.innerHTML = selElmnt.options[j].innerHTML;
-			c.addEventListener('click', function(e) {
-				/* When an item is clicked, update the original select box,
-				and the selected item: */
-				var y, i, k, s, h, sl, yl;
-				s = this.parentNode.parentNode.getElementsByTagName('select')[0];
-				sl = s.length;
-				h = this.parentNode.previousSibling;
-				for (i = 0; i < sl; i++) {
-					if (s.options[i].innerHTML == this.innerHTML) {
-						s.selectedIndex = i;
-						h.innerHTML = this.innerHTML;
-						y = this.parentNode.getElementsByClassName('same-as-selected');
-						yl = y.length;
-						for (k = 0; k < yl; k++) {
-							y[k].removeAttribute('class');
-						}
-						this.setAttribute('class', 'same-as-selected');
-						break;
-					}
-				}
-				h.click();
+// Links
 
-				chrome.storage.local.set({ [s.id]: s.value });
-			});
-			b.appendChild(c);
-		}
-		x[i].appendChild(b);
-		a.addEventListener('click', function(e) {
-			/* When the select box is clicked, close any other select boxes,
-			and open/close the current select box: */
-			e.stopPropagation();
-			closeAllSelect(this);
-			this.nextSibling.classList.toggle('select-hide');
-			this.classList.toggle('select-arrow-active');
-		});
-	}
-	function closeAllSelect(elmnt) {
-		/* A function that will close all select boxes in the document,
-		except the current select box: */
-		var x, y, i, xl, yl, arrNo = [];
-		x = document.getElementsByClassName('select-items');
-		y = document.getElementsByClassName('select-selected');
-		xl = x.length;
-		yl = y.length;
-		for (i = 0; i < yl; i++) {
-			if (elmnt == y[i]) {
-				arrNo.push(i)
-			} else {
-				y[i].classList.remove('select-arrow-active');
-			}
-		}
-		for (i = 0; i < xl; i++) {
-			if (arrNo.indexOf(i)) {
-				x[i].classList.add('select-hide');
-			}
-		}
-	}
-	document.addEventListener('click', closeAllSelect);
+// Main click, other click, and keypress
+function clickAndKeypress(el, fn) {
+	el.onclick = fn;
+	el.onauxclick = fn;
+	el.onkeypress = fn;
 }
 
-function rangeNumbersInit() {
-	var containers = document.getElementsByClassName('rangeNumbers');
-	var rangeMins = document.getElementsByClassName('rangeNumbersMin');
-	var rangeMaxes = document.getElementsByClassName('rangeNumbersMax');
-	var rangeValues = document.getElementsByClassName('rangeNumbersValue');
+// Link: Big options page
+function bigOptions(e) {
+	// Skip other keys or right click
+	if ((e.code && e.code != 'Enter') || e.button == 2) {
+		return;
+	}
 
-	if (containers.length == rangeMins.length && rangeMins.length == rangeMaxes.length && rangeMins.length == rangeValues.length) {
-		for (var i = 0; i < containers.length; i++) {
-			var container = containers[i];
+	// Create tab
+	chrome.runtime.openOptionsPage();
+}
+const bigOptionsLink = document.getElementById('bigOptions');
+clickAndKeypress(bigOptionsLink, bigOptions);
+if (location.hash != '#popup') {
+	bigOptionsLink.className = 'hidden';
+}
 
-			var range = container.getElementsByTagName('input')[0];
-			var min = range.min;
-			var max = range.max;
-			var value = range.value;
-			var multiplier = range.dataset.multiplier;
-			var unit = range.dataset.unit;
 
-			if (multiplier != undefined) {
-				min *= multiplier;
-				max *= multiplier;
-				value *= multiplier;
-			}
-			if (unit != undefined) {
-				min += unit;
-				max += unit;
-				value += unit;
-			}
-			rangeMins[i].innerHTML = min;
-			rangeMaxes[i].innerHTML = max;
-			rangeValues[i].innerHTML = value;
+
+// Options
+
+// Load all options
+async function loadOptions() {
+	const options = await chrome.storage.local.get();
+
+	// View options on inputs
+	for (const [key, value] of Object.entries(options)) {
+		const field = document.getElementById(key);
+		if (! field) continue;
+
+		if (field.type == 'checkbox') {
+			field.checked = value;
+		}
+		else if (field.type == 'range') {
+			field.value = value;
+			const id = field.id + 'Number';
+			document.getElementById(id).value = value;
+		}
+		else if (field.type == 'file') {
+			document.getElementById(key).style.backgroundImage = `url(${value})`;
+		}
+		else {
+			field.value = value;
 		}
 	}
 }
+loadOptions();
 
-function rangeNumbersLive() {
-	var containers = document.getElementsByClassName('rangeNumbers');
+// Save changed option
+let autoSaveTimestamp = 0;
+function saveOption(key, value, autoSaveDelay=0) {
+	autoSaveTimestamp = Date.now();
 
-	for (var i = 0; i < containers.length; i++) {
-		var container = containers[i];
-		var range = container.getElementsByTagName('input')[0];
+	setTimeout(() => {
+		// Wait a bit until the user stops
+		if (autoSaveTimestamp + autoSaveDelay > Date.now())
+			return;
 
-		range.oninput = event => {
-			var range = event.target;
+		// Save data
+		chrome.storage.local.set({ [key]: value });
 
-			var multiplier = range.dataset.multiplier;
-			var unit = range.dataset.unit;
-			var text = range.value;
+		// Remove close warning
+		window.onbeforeunload = null;
 
-			if (multiplier != undefined) {
-				text *= multiplier;
-			}
-			if (unit != undefined) {
-				text += unit;
-			}
+	}, autoSaveDelay);
+}
 
-			var valueLabel = range.parentElement.getElementsByClassName('rangeNumbersValue')[0];
-			valueLabel.innerHTML = text;
-		}
+
+
+// Inputs
+
+// Checkbox
+function checkboxChanged(e) {
+	const key = e.target.id;
+	const value = e.target.checked;
+
+	// Set option with storage local immediately
+	saveOption(key, value);
+}
+for (const checkbox of document.querySelectorAll('input[type="checkbox"]')) {
+	checkbox.oninput = checkboxChanged;
+}
+
+// Text, color, textarea
+function otherChanged(e) {
+	const key = e.target.id;
+	const value = e.target.value;
+
+	// Set option with storage local after the user stops typing
+	saveOption(key, value, 750);
+}
+for (const input of document.querySelectorAll('input[type="text"], input[type="color"], textarea')) {
+	input.oninput = otherChanged;
+}
+
+// Range
+function rangeChanged(e) {
+	const target = e.target;
+	let value = parseInt(target.value);
+
+	// Sync range & input
+	let otherId, key;
+	if (target.type == 'range') {
+		// Get key
+		key = target.id;
+
+		// Get id of number input
+		otherId = key + 'Number';
+	}
+	else {
+		// Get key
+		key = target.id.slice(0, -6)
+
+		// Make number input stay in range
+		const min = parseInt(target.min);
+		const max = parseInt(target.max);
+		if (value < min)
+			value = target.value = min;
+		else if (value > max)
+			value = target.value = max;
+
+		// Get id of range input
+		otherId = key;
+	}
+	document.getElementById(otherId).value = value;
+
+	// Set option with storage local after the user stops using the slider
+	saveOption(key, value, 250);
+}
+const BACKSPACE = 8;
+const DELETE = 46;
+const ZERO = 48;
+const NINE = 57;
+function rangeNumber(e) {
+	if (e.keyCode == BACKSPACE || e.keyCode == DELETE || (e.keyCode >= ZERO && e.keyCode <= NINE)) {
+		const id = e.target.id + 'Number';
+		const number = document.getElementById(id);
+		number.value = '';
+		number.focus();
 	}
 }
+for (const range of document.querySelectorAll('input[type="range"]')) {
+	// Go to number input on key down
+	range.onkeydown = rangeNumber;
 
-function updateColorPickers() {
-	var inputs = document.getElementsByTagName('input');
-	for (var i = 0; i < inputs.length; i++) {
-		var input = inputs[i];
-		if (input.type == 'color') {
-			input.style.background = input.value;
-		}
-	}
-}
+	// Make container for range, number, & unit
+	const containerAll = document.createElement('div');
+	containerAll.className = 'flex'
+	range.parentNode.appendChild(containerAll);
+	containerAll.appendChild(range);
 
-function updateColorPickersOnUnfocus() {
-	var inputs = document.getElementsByTagName('input');
-	for (var i = 0; i < inputs.length; i++) {
-		var input = inputs[i];
-		if (input.type == 'color') {
-			input.addEventListener('blur', function(event) {
-				updateColorPickers();
-			});
-		}
-	}
-}
+	// Make container for number & unit
+	const container = document.createElement('div');
+	container.className = 'rangeNumberAndUnit flex'
+	containerAll.appendChild(container);
 
-// Load option helpers
-function loadOptionImage(string) {
-	chrome.storage.local.get(string, results => {
-		optionElement = document.getElementById(string);
-		if (results[string]) {
-			optionElement.style.backgroundImage = 'url(' + results[string] + ')';
-		} else {
-			optionElement.style.backgroundImage = 'url(/assets/images/mountain.webp)';
-		}
-	});
-}
-function loadOptionValue(string) {
-	chrome.storage.local.get(string, results => {
-		document.getElementById(string).value = results[string];
-	});
-}
-function loadOptionChecked(string) {
-	chrome.storage.local.get(string, results => {
-		document.getElementById(string).checked = results[string];
-	});
-}
+	// Make number input
+	const number = document.createElement('input');
+	number.type = 'number';
+	number.className = 'rangeNumber';
+	number.min = range.min;
+	number.max = range.max;
+	number.id = range.id + 'Number';
+	number.tabIndex = -1;
+	container.appendChild(number);
 
-function defaultOptions() {
-	chrome.storage.local.get(null, options => {
-		if (Object.keys(options).length == 0) {
-			chrome.storage.local.set({
-				// Theme
-				backgroundOverlayColor: '#000000',
-				backgroundOverlayOpacity: 35,
-				textColor: '#FFFFFF',
-				mainFont: 'Montserrat',
-				accentFont: 'Marck Script',
-				zoomLevel: 100,
-				verticallyCenterEverything: false,
-				showSettingsButton: true,
+	// Make number input unit
+	const unit = range.dataset.unitSup || range.dataset.unit;
+	if (unit) {
+		const unitTagName = range.dataset.unitSup ? 'sup' : 'small';
 
-				// Time & Date
-				showTime: true,
-				showSeconds: false,
-				showAMPM: false,
-				showWeekday: true,
-				showDate: true,
-				militaryTime: false,
-				dateFormat: 'm d, y',
+		const unitContainer = document.createElement('div');
+		unitContainer.className = 'rangeNumberUnit flex';
+		container.appendChild(unitContainer);
 
-				// Bookmarks
-				showBookmarks: true,
-				showIcons: true,
-				showLabels: true,
-				bookmarkAlignment: 'left',
-				allowBookmarksBar: true,
-				allowOtherBookmarks: false,
-				allowMobileBookmarks: false,
-				dimBookmarks: false,
-				numberOfColumns: 5,
-				columnWidth: 8,
-
-				// Advanced
-				customCSS: '',
-
-			}, result => {
-				loadOptions();
-			});
-		} else {
-			loadOptions();
-		}
-	});
-}
-
-function loadOptions() {
-	// Theme
-	loadOptionImage('backgroundImage');
-	loadOptionValue('backgroundOverlayColor');
-	loadOptionValue('backgroundOverlayOpacity');
-	loadOptionValue('textColor');
-	loadOptionValue('mainFont');
-	loadOptionValue('accentFont');
-	loadOptionValue('zoomLevel');
-	loadOptionChecked('verticallyCenterEverything');
-	loadOptionChecked('showSettingsButton');
-
-	// Time & Date
-	loadOptionChecked('showTime');
-	loadOptionChecked('showSeconds');
-	loadOptionChecked('showAMPM');
-	loadOptionChecked('showWeekday');
-	loadOptionChecked('showDate');
-	loadOptionChecked('militaryTime');
-	loadOptionValue('dateFormat');
-
-	// Bookmarks
-	loadOptionChecked('showBookmarks');
-	loadOptionChecked('showIcons');
-	loadOptionChecked('showLabels');
-	loadOptionValue('bookmarkAlignment');
-	loadOptionChecked('allowBookmarksBar');
-	loadOptionChecked('allowOtherBookmarks');
-	loadOptionChecked('allowMobileBookmarks');
-	loadOptionChecked('dimBookmarks');
-	loadOptionValue('numberOfColumns');
-	loadOptionValue('columnWidth');
-
-	// Advanced
-	loadOptionValue('customCSS');
-
-	// Wait for Chrome storage, then update inputs
-	chrome.storage.local.get('blah', results => {
-		rangeNumbersInit();
-		rangeNumbersLive();
-		updateColorPickers();
-		selectDropdownInit();
-	});
-}
-
-// Save option helpers
-function saveOptionImage(string) {
-	optionElement = document.getElementById(string);
-	optionElement.onchange = function () {
-		image = optionElement.files[0];
-		var reader = new FileReader();
-		if (image instanceof Blob) {
-			reader.readAsDataURL(image);
-		}
-		reader.onload = function (event) {
-			chrome.storage.local.set({ [string]: event.target.result }, function() {
-				chrome.storage.local.get(string, results => {
-					optionElement.style.backgroundImage = 'url(' + results[string] + ')';
-					optionElement.classList.remove('dropping');
-				});
-			});
-		}
-	}
-	optionElement.ondragenter = function (event) {
-		optionElement.classList.add('dropping');
-	}
-	optionElement.ondragleave = function (event) {
-		optionElement.classList.remove('dropping');
-	}
-}
-function saveOptionValue(string, savingText=false) {
-	document.getElementById(string).onchange = event => {
-		chrome.storage.local.set({ [string]: event.target.value });
+		const unitElement = document.createElement(unitTagName);
+		unitElement.innerHTML = unit;
+		unitContainer.appendChild(unitElement);
 	}
 
-	if (savingText) {
-		document.getElementById(string).oninput = event => {
-			chrome.storage.local.set({ [string]: event.target.value });
-		}
+	// Sync both inputs
+	range.oninput = rangeChanged;
+	number.oninput = rangeChanged;
+}
+
+// File
+function fileChanged(e) {
+	const target = e.target;
+	const key = target.id;
+	const image = target.files[0];
+
+	// Read file as data URL
+	const reader = new FileReader();
+	reader.readAsDataURL(image);
+	reader.onload = e => {
+		const value = e.target.result;
+
+		// Set option with storage local
+		saveOption(key, value);
+
+		// Preview image
+		target.style.backgroundImage = `url(${value})`;
 	}
 }
-function saveOptionChecked(string) {
-	document.getElementById(string).onchange = event => {
-		chrome.storage.local.set({ [string]: event.target.checked });
-	}
+for (const input of document.querySelectorAll('input[type="file"]')) {
+	input.oninput = fileChanged;
 }
-function saveOptions() {
-	// Theme
-	saveOptionImage('backgroundImage');
-	saveOptionValue('backgroundOverlayColor');
-	saveOptionValue('backgroundOverlayOpacity');
-	saveOptionValue('textColor');
-	saveOptionValue('mainFont', true);
-	saveOptionValue('accentFont', true);
-	saveOptionValue('zoomLevel');
-	saveOptionChecked('verticallyCenterEverything');
-	saveOptionChecked('showSettingsButton');
-
-	// Time & Date
-	saveOptionChecked('showTime');
-	saveOptionChecked('showSeconds');
-	saveOptionChecked('showAMPM');
-	saveOptionChecked('showWeekday');
-	saveOptionChecked('showDate');
-	saveOptionChecked('militaryTime');
-	saveOptionValue('dateFormat');
-
-	// Bookmarks
-	saveOptionChecked('showBookmarks');
-	saveOptionChecked('showIcons');
-	saveOptionChecked('showLabels');
-	saveOptionValue('bookmarkAlignment');
-	saveOptionChecked('allowBookmarksBar');
-	saveOptionChecked('allowOtherBookmarks');
-	saveOptionChecked('allowMobileBookmarks');
-	saveOptionChecked('dimBookmarks');
-	saveOptionValue('numberOfColumns');
-	saveOptionValue('columnWidth');
-
-	// Advanced
-	saveOptionValue('customCSS', true);
-}
-
-function tabInTextareas() {
-	var textareas = document.getElementsByTagName('textarea');
-	var count = textareas.length;
-
-	for (var i=0; i<count; i++) {
-		textareas[i].onkeydown = function(e) {
-			if (e.keyCode == 9 || e.which == 9) {
-				e.preventDefault();
-
-				var s = this.selectionStart;
-				this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
-				this.selectionEnd = s+1; 
-			}
-		}
-	}
-}
-
-updateColorPickersOnUnfocus();
-defaultOptions();
-saveOptions();
-tabInTextareas();

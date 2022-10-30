@@ -1,213 +1,188 @@
 <!DOCTYPE html>
-
-<html>
+<html lang='en' dir='ltr'>
 <head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
 	<title>Sunrise New Tab Page - Options</title>
 
-	<link rel='icon' type='image/svg+xml' href='/assets/iconColor.svg'>
+	<link id='favicon' rel='icon' type='image/svg+xml' href='/assets/icon.svg'>
 
-	<link rel='stylesheet' type='text/css' href='/options/options.css'>
+	<link as='style' rel='stylesheet' type='text/css' href='/options/options.css'>
 </head>
 
 <body>
-	<header class='horizontalScrolling test'>
-		<div class='container fixedContainer split'>
-			<div>
-				<img class='logoLightMode' src='/assets/iconColor.svg' width='40px' height='40px'>
-				<img class='logoDarkMode' src='/assets/iconDarkMode.svg' width='40px' height='40px'>
+	<header>
+		<img src='/assets/icon.svg'>
 
-				<h1>Sunrise New Tab Page</h1>
-			</div>
-		</div>
+		<h2>
+			Sunrise New Tab Page
+		</h2>
 	</header>
 
-	<section id='options'>
-		<div class='container smallContainer'>
-			<div class='box'>
-				<h2>Theme</h2>
+	<div>
+		<a class='option' id='bigOptions' tabindex='0'>
+			Big options page
+		</a>
+	</div>
 
-				<label>
-					Background Image
-				</label>
-				<input id='backgroundImage' type='file' accept='.webp, .jpg, .jpeg, .png, .gif' aria-invalid='false' title='.webp or .jpg are recommended for large images'><br>
+	<!-- Theme -->
+	<div>
+		<label class='option'>
+			Background image
+			<input type='file' id='backgroundImage' accept='.webp, .jpg, .jpeg, .png, .gif'>
+		</label>
+		<label class='option'>
+			Background overlay color
+			<input type='color' id='backgroundOverlayColor'>
+		</label>
+		<label class='option defaultCursor'>
+			Background overlay opacity
+			<input type='range' id='backgroundOverlayOpacity' min='0' max='100' step='5' data-unit='%'>
+		</label>
+		<label class='option'>
+			Text color
+			<input type='color' id='textColor'>
+		</label>
+		<label class='option'>
+			Main font
+			<input type='text' id='mainFont' placeholder='Font name'>
+		</label>
+		<label class='option'>
+			Accent font
+			<input type='text' id='accentFont' placeholder='Font name'>
+		</label>
+		<label class='option defaultCursor'>
+			Zoom level
+			<input type='range' id='zoomLevel' min='50' max='200' step='25' data-unit='%'>
+		</label>
+		<label class='option'>
+			Vertically center everything
+			<input type='checkbox' id='verticallyCenterEverything'>
+		</label>
+		<label class='option'>
+			Show settings button
+			<input type='checkbox' id='showSettingsButton'>
+		</label>
+	</div>
 
-				<label>
-					Background Overlay Color
-				</label>
-				<input id='backgroundOverlayColor' type='color'><br>
+	<!-- Time -->
+	<div>
+		<label class='option'>
+			Show time
+			<input type='checkbox' id='showTime'>
+		</label>
+		<label class='option'>
+			Show seconds
+			<input type='checkbox' id='showSeconds'>
+		</label>
+		<label class='option'>
+			Show AM/PM
+			<input type='checkbox' id='showAMPM'>
+		</label>
+		<label class='option'>
+			Military time
+			<input type='checkbox' id='militaryTime'>
+		</label>
+	</div>
 
-				<label>
-					Background Overlay Opacity
-				</label>
-				<div class='rangeNumbers'>
-					<span class='rangeNumbersMin'></span>
-					<input id='backgroundOverlayOpacity' type='range' min='0' max='100' data-unit='%' value='35' step='5'>
-					<span class='rangeNumbersValue'></span>
-					<span class='rangeNumbersMax'></span>
-				</div><br>
+	<!-- Weekday -->
+	<div>
+		<label class='option'>
+			Show weekday
+			<input type='checkbox' id='showWeekday'>
+		</label>
+	</div>
 
-				<label>
-					Text Color
-				</label>
-				<input id='textColor' type='color'>
+	<!-- Date -->
+	<div>
+		<label class='option'>
+			Show date
+			<input type='checkbox' id='showDate'>
+		</label>
+		<label class='option'>
+			Date format
+			<select id='dateFormat'>
+				<option value='m d, y'>m d, y</option>
+				<option value='d m y'>d m y</option>
+			</select>
+		</label>
+	</div>
 
-				<label>
-					Main Font
-				</label>
-				<input id='mainFont' type='text' placeholder='Local font name'><br>
+	<!-- Bookmarks -->
+	<div>
+		<label class='option'>
+			Show bookmarks
+			<input type='checkbox' id='showBookmarks'>
+		</label>
+		<label class='option'>
+			Show icons
+			<input type='checkbox' id='showIcons'>
+		</label>
+		<label class='option'>
+			Show labels
+			<input type='checkbox' id='showLabels'>
+		</label>
+		<label class='option'>
+			Bookmark alignment
+			<select id='bookmarkAlignment'>
+				<option value='left'>Left</option>
+				<option value='center'>Center</option>
+				<option value='right'>Right</option>
+			</select>
+		</label>
+		<label class='option'>
+			Use bookmarks bar
+			<input type='checkbox' id='allowBookmarksBar'>
+		</label>
+		<label class='option'>
+			Use other bookmarks
+			<input type='checkbox' id='allowOtherBookmarks'>
+		</label>
+		<label class='option'>
+			Use mobile bookmarks
+			<input type='checkbox' id='allowMobileBookmarks'>
+		</label>
+		<label class='option'>
+			Dim bookmarks
+			<input type='checkbox' id='dimBookmarks'>
+		</label>
+		<label class='option'>
+			Dim bookmarks
+			<input type='checkbox' id='dimBookmarks'>
+		</label>
+		<label class='option defaultCursor'>
+			Number of columns
+			<input type='range' id='numberOfColumns' min='1' max='20'>
+		</label>
+		<label class='option defaultCursor'>
+			Column width
+			<input type='range' id='columnWidth' min='1' max='20'>
+		</label>
+	</div>
 
-				<label>
-					Accent Font
-				</label>
-				<input id='accentFont' type='text' placeholder='Local font name'><br>
+	<!-- Advanced -->
+	<div>
+		<label class='option rows'>
+			Custom CSS
+			<textarea id='customCSS' rows='30' spellcheck='false'></textarea>
+		</label>
+	</div>
 
-				<label>
-					Zoom Level
-				</label>
-				<div class='rangeNumbers'>
-					<span class='rangeNumbersMin'></span>
-					<input id='zoomLevel' type='range' min='50' max='200' data-unit='%' value='100' step='25'>
-					<span class='rangeNumbersValue'></span>
-					<span class='rangeNumbersMax'></span>
-				</div><br>
-
-				<label>
-					Vertically Center Everything
-				</label>
-				<input id='verticallyCenterEverything' type='checkbox'><br>
-
-				<label>
-					Show Settings Button
-				</label>
-				<input id='showSettingsButton' type='checkbox'><br>
-			</div>
-
-			<div class='box'>
-				<h2>Time & Date</h2>
-
-				<label>
-					Show Time
-				</label>
-				<input id='showTime' type='checkbox'><br>
-
-				<label>
-					Show Seconds
-				</label>
-				<input id='showSeconds' type='checkbox'><br>
-
-				<label>
-					Show AM/PM
-				</label>
-				<input id='showAMPM' type='checkbox'><br>
-
-				<label>
-					Show Weekday
-				</label>
-				<input id='showWeekday' type='checkbox'><br>
-
-				<label>
-					Show Date
-				</label>
-				<input id='showDate' type='checkbox'><br>
-
-				<label>
-					Military Time
-				</label>
-				<input id='militaryTime' type='checkbox'><br>
-
-				<label>
-					Date Format
-				</label>
-				<div class='select'>
-					<select id='dateFormat'>
-						<option value='m d, y'>m d, y</option>
-						<option value='d m y'>d m y</option>
-					</select>
-				</div>
-			</div>
-
-			<div class='box'>
-				<h2>Bookmarks</h2>
-
-				<label>
-					Show Bookmarks
-				</label>
-				<input id='showBookmarks' type='checkbox'><br>
-
-				<label>
-					Show Icons
-				</label>
-				<input id='showIcons' type='checkbox'><br>
-
-				<label>
-					Show Labels
-				</label>
-				<input id='showLabels' type='checkbox'><br>
-
-				<label>
-					Bookmark Alignment
-				</label>
-				<div class='select'>
-					<select id='bookmarkAlignment'>
-						<option value='left'>left</option>
-						<option value='center'>center</option>
-						<option value='right'>right</option>
-					</select>
-				</div>
-
-				<label>
-					Allow Bookmarks Bar
-				</label>
-				<input id='allowBookmarksBar' type='checkbox'><br>
-
-				<label>
-					Allow Other Bookmarks
-				</label>
-				<input id='allowOtherBookmarks' type='checkbox'><br>
-
-				<label>
-					Allow Mobile Bookmarks
-				</label>
-				<input id='allowMobileBookmarks' type='checkbox'><br>
-
-				<label>
-					Dim Bookmarks
-				</label>
-				<input id='dimBookmarks' type='checkbox'><br>
-
-				<label>
-					Number of Columns
-				</label>
-				<div class='rangeNumbers'>
-					<span class='rangeNumbersMin'></span>
-					<input id='numberOfColumns' type='range' min='1' max='20'>
-					<span class='rangeNumbersValue'></span>
-					<span class='rangeNumbersMax'></span>
-				</div><br>
-
-				<label>
-					Column Width
-				</label>
-				<div class='rangeNumbers'>
-					<span class='rangeNumbersMin'></span>
-					<input id='columnWidth' type='range' min='1' max='20'>
-					<span class='rangeNumbersValue'></span>
-					<span class='rangeNumbersMax'></span>
-				</div>
-			</div>
-
-			<div class='box'>
-				<h2>Advanced</h2>
-
-				<label>
-					Custom CSS
-				</label><br>
-				<textarea id='customCSS' rows='30' spellcheck='false'></textarea>
-			</div>
-		</div>
-
-
-	</section>
+	<div>
+		<a class='option' href='https://www.buymeacoffee.com/rcbennett' target='_blank'>
+			Donate
+		</a>
+		<a class='option' href='https://chrome.google.com/webstore/detail/sunrise-%E2%80%94-new-tab-page/bcejgfegfjlicbdmgkcfdkifnbcfcpma/reviews' target='_blank'>
+			Rate
+		</a>
+		<a class='option' href='https://github.com/RobbyCBennett?tab=repositories&q=browser-extension' target='_blank'>
+			More extensions
+		</a>
+		<a class='option' href='https://github.com/RobbyCBennett/SunriseNewTabPage' target='_blank'>
+			Source code
+		</a>
+	</div>
 
 	<script src='/options/options.js'></script>
 </body>
