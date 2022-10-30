@@ -187,6 +187,9 @@ input, textarea {
 	font-family: raleway;
 	font-size: inherit;
 }
+.invalid {
+	color: var(--color);
+}
 
 
 

@@ -119,13 +119,21 @@ function rangeChanged(e) {
 		// Get key
 		key = target.id.slice(0, -6)
 
-		// Make number input stay in range
-		const min = parseInt(target.min);
-		const max = parseInt(target.max);
-		if (value < min)
-			value = target.value = min;
-		else if (value > max)
-			value = target.value = max;
+		// Make value stay in range and style as invalid
+		const min = parseInt(target.dataset.min);
+		const max = parseInt(target.dataset.max);
+		const below = value < min;
+		if (below || value > max) {
+			// Make value stay in range
+			if (below) value = min;
+			else value = max;
+
+			// Style as invalid
+			target.classList.add('invalid');
+		}
+		else {
+			target.classList.remove('invalid');
+		}
 
 		// Get id of range input
 		otherId = key;
@@ -166,8 +174,8 @@ for (const range of document.querySelectorAll('input[type="range"]')) {
 	const number = document.createElement('input');
 	number.type = 'number';
 	number.className = 'rangeNumber';
-	number.min = range.min;
-	number.max = range.max;
+	number.dataset.min = range.min;
+	number.dataset.max = range.max;
 	number.id = range.id + 'Number';
 	number.tabIndex = -1;
 	container.appendChild(number);
