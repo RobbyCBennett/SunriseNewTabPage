@@ -99,7 +99,7 @@ input::-webkit-inner-spin-button {
 
 
 /* General */
-.hidden {
+.hidden, .option.hidden {
 	display: none;
 }
 .flex {

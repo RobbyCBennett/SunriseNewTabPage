@@ -37,17 +37,24 @@ async function loadOptions() {
 		if (! field) continue;
 
 		if (field.type == 'checkbox') {
+			// Load option
 			field.checked = value;
+
+			// Hide/show the options
+			if (! value) toggleOptions(field);
 		}
 		else if (field.type == 'range') {
+			// Load option
 			field.value = value;
 			const id = field.id + 'Number';
 			document.getElementById(id).value = value;
 		}
 		else if (field.type == 'file') {
+			// Load option
 			document.getElementById(key).style.backgroundImage = `url(${value})`;
 		}
 		else {
+			// Load option
 			field.value = value;
 		}
 	}
@@ -73,14 +80,29 @@ function saveOption(key, value, autoSaveDelay=0) {
 	}, autoSaveDelay);
 }
 
+// Show/hide options
+function toggleOptions(el) {
+	const hideClass = el.dataset.hide;
+	if (hideClass) {
+		for (const option of document.getElementsByClassName(hideClass)) {
+			option.classList.toggle('hidden');
+		}
+	}
+}
+
 
 
 // Inputs
 
 // Checkbox
 function checkboxChanged(e) {
-	const key = e.target.id;
-	const value = e.target.checked;
+	const target = e.target;
+
+	const key = target.id;
+	const value = target.checked;
+
+	// Hide/show the options
+	toggleOptions(target);
 
 	// Set option with storage local immediately
 	saveOption(key, value);
