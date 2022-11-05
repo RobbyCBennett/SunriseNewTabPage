@@ -32,9 +32,9 @@ Options
   * Show Time
   * Show Seconds
   * Show AM/PM
+  * Military Time
   * Show Weekday
   * Show Date
-  * Military Time
   * Date Format
 * Bookmarks
   * Show Bookmarks
