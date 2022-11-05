@@ -422,8 +422,7 @@ for (let i = oldSelects.length - 1; i >= 0; i--) {
 	oldSelect.parentNode.appendChild(container);
 
 	// Make select button
-	const select = document.createElement('input');
-	select.type = 'text';
+	const select = document.createElement('button');
 	select.id = oldSelect.id;
 	select.readOnly = true;
 	select.className = 'select hiddenOptions';

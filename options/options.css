@@ -93,7 +93,7 @@ a {
 	color: inherit;
 	text-decoration: none;
 }
-input, textarea {
+input, textarea, button {
 	background: none;
 	border: none;
 }
@@ -188,7 +188,7 @@ header img {
 
 
 /* Input */
-input, textarea {
+input, textarea, button {
 	color: var(--text);
 	font-family: raleway;
 	font-size: inherit;
@@ -342,8 +342,19 @@ textarea {
 select {
 	display: none;
 }
+.select, option {
+	display: flex;
+	align-items: center;
+	width: var(--inputWidth);
+	height: var(--inputHeight);
+	padding-left: var(--margin);
+	padding-right: var(--margin);
+	background-color: var(--input);
+}
 .select {
+	position: relative;
 	cursor: pointer;
+	box-sizing: content-box;
 }
 .select::selection {
 	background-color: transparent;
@@ -352,17 +363,17 @@ select {
 	position: absolute;
 	z-index: 1;
 }
-.hiddenOptions + .options {
-	display: none;
+.select::after {
+	content: '<';
+	position: absolute;
+	right: calc(var(--margin) * 1.25);
+	transform: rotate(-90deg);
 }
-option {
-	display: flex;
-	align-items: center;
-	width: var(--inputWidth);
-	height: var(--inputHeight);
-	padding-left: var(--margin);
-	padding-right: var(--margin);
-	background-color: var(--input);
+.select.hiddenOptions::after {
+	content: '>';
+}
+.hiddenOptions + .options option {
+	display: none;
 }
 option:hover, .select:hover, option.selected {
 	background-color: var(--inputHover);
