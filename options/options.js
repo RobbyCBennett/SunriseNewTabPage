@@ -136,6 +136,9 @@ function rangeChanged(e) {
 
 		// Get id of number input
 		otherId = key + 'Number';
+
+		// Make number input invalid
+		document.getElementById(otherId).classList.remove('invalid');
 	}
 	else {
 		// Get key
