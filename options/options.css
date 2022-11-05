@@ -4,14 +4,17 @@
 	--text:    #323232;
 	--textDim: #7F7F7F;
 	--bg:      #FFFFFF;
-	--bgInput: #FFFFFF;
 
 	--color:    #FF6C6C;
-	--colorDim: #ffb3b3;
+	--colorDim: #FFB3B3;
 
-	--option: rgba(0, 0, 0, 3%);
-	--hover:  rgba(127, 127, 127, 15%);
-	--active: rgba(127, 127, 127, 25%);
+	--option:       rgba(0, 0, 0, 3%);
+	--optionHover:  rgba(127, 127, 127, 15%);
+	--optionActive: rgba(127, 127, 127, 25%);
+
+	--input:       #FFFFFF;
+	--inputHover:  #F7F7F7;
+	--inputActive: #F0F0F0;
 
 
 
@@ -39,15 +42,18 @@
 @media (prefers-color-scheme: dark) {
 	:root {
 		/* Colors */
-		--text:    #EEEEEE;
-		--bg:      #292A2D;
-		--bgInput: #1E1F21;
+		--text: #EEEEEE;
+		--bg:   #292A2D;
 
 		--colorDim: #803636;
 
-		--option: rgba(0, 0, 0, 10%);
-		--hover:  rgba(127, 127, 127, 10%);
-		--active: rgba(127, 127, 127, 20%);
+		--option:       rgba(0, 0, 0, 10%);
+		--optionHover:  rgba(127, 127, 127, 10%);
+		--optionActive: rgba(127, 127, 127, 20%);
+
+		--input:       #1E1F21;
+		--inputHover:  #2A2B2E;
+		--inputActive: #35373B;
 	}
 
 	html {
@@ -155,13 +161,13 @@ header img {
 	transition: background-color var(--transition);
 }
 .option:hover, .option:focus-visible, .option:has(:focus-visible) {
-	background-color: var(--hover);
+	background-color: var(--optionHover);
 }
 .option:focus-visible, .option:has(:focus-visible) {
-	box-shadow: inset 0.25rem 0 0 var(--color);
+	box-shadow: inset var(--border) 0 0 var(--color);
 }
 .option:active {
-	background-color: var(--active);
+	background-color: var(--optionActive);
 }
 .option:first-child {
 	margin-top: var(--margin);
@@ -233,7 +239,7 @@ input[type='text'] {
 	height: var(--inputHeight);
 	padding-left: var(--margin);
 	padding-right: var(--margin);
-	background-color: var(--bgInput);
+	background-color: var(--input);
 }
 
 
@@ -248,7 +254,7 @@ input[type='checkbox'] {
 	width: calc(var(--circle) * 1.5);
 	height: calc(var(--circle) * 0.75);
 	border-radius: var(--circle);
-	background-color: var(--active);
+	background-color: var(--optionActive);
 	margin-left: var(--circle);
 }
 input[type='checkbox']::before {
@@ -293,7 +299,7 @@ input[type='range']::-webkit-slider-runnable-track {
 	cursor: pointer;
 	height: calc(var(--circle) * 0.75);
 	border-radius: var(--circle);
-	background-color: var(--active);
+	background-color: var(--optionActive);
 }
 
 
@@ -323,9 +329,47 @@ input[type='range']::-webkit-slider-runnable-track {
 
 /* Textarea */
 textarea {
-	background-color: var(--bgInput);
+	background-color: var(--input);
 	font-family: sourceCodePro;
 	width: calc(100% - var(--margin) * 2);
 	resize: none;
 	padding: calc(var(--margin) * 0.75) var(--margin);
+}
+
+
+
+/* Select */
+select {
+	display: none;
+}
+.select {
+	cursor: pointer;
+}
+.select::selection {
+	background-color: transparent;
+}
+.options {
+	position: absolute;
+	z-index: 1;
+}
+.hiddenOptions + .options {
+	display: none;
+}
+option {
+	display: flex;
+	align-items: center;
+	width: var(--inputWidth);
+	height: var(--inputHeight);
+	padding-left: var(--margin);
+	padding-right: var(--margin);
+	background-color: var(--input);
+}
+option:hover, .select:hover, option.selected {
+	background-color: var(--inputHover);
+}
+option:active, .select:active {
+	background-color: var(--inputActive);
+}
+option.selected {
+	box-shadow: inset var(--border) 0 0 var(--color);
 }
