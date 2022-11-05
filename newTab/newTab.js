@@ -34,6 +34,7 @@ async function setDefaults() {
 		allowBookmarksBar: true,
 		allowOtherBookmarks: false,
 		allowMobileBookmarks: false,
+		dimBookmarks: true,
 		numberOfColumns: 5,
 		columnWidth: 8,
 
@@ -163,11 +164,6 @@ async function loadOptions() {
 		cssVariables.setProperty('--showLabels', 'none');
 	}
 
-	// Dim Favorites
-	if (options.dimBookmarks === true) {
-		cssVariables.setProperty('--dimBookmarks', '50%');
-	}
-
 	// Bookmark Alignment
 	if (options.bookmarkAlignment === 'center') {
 		document.getElementById('favorites').classList.add('center');
@@ -175,6 +171,11 @@ async function loadOptions() {
 		document.getElementById('favorites').classList.add('right');
 	} else {
 		document.getElementById('favorites').classList.add('left');
+	}
+
+	// Dim Bookmarks
+	if (options.dimBookmarks === true) {
+		cssVariables.setProperty('--dimBookmarks', '50%');
 	}
 
 	// Column Width
