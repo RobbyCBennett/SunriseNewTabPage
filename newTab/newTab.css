@@ -5,8 +5,8 @@
 	--overlayColor: rgba(0, 0, 0, 0);
 	--scrollbarColor: rgba(255, 255, 255, 0.25);
 
-	--mainFont: 'Montserrat', sans-serif;
-	--accentFont: 'Marck Script', sans-serif;
+	--mainFont: 'Montserrat';
+	--accentFont: 'Marck Script';
 
 	--zoomLevel: 100%;
 
@@ -24,6 +24,20 @@
 	:root {
 		--bgColor: #000;
 	}
+}
+
+
+
+/* Fonts */
+@font-face {
+	font-family: 'Montserrat';
+	src: url('/assets/montserrat.ttf') format('truetype');
+	font-display: block;
+}
+@font-face {
+	font-family: 'Marck Script';
+	src: url('/assets/marckScript.ttf') format('truetype');
+	font-display: block;
 }
 
 
