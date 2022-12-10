@@ -139,6 +139,7 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-width: max-content;
 }
 header img {
 	width: var(--margin);
