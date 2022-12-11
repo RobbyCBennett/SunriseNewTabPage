@@ -20,6 +20,7 @@
 
 	/* Sizes */
 	--rem:    18px;
+	--code:   0.75rem;
 	--margin: 1rem;
 
 	--inputWidth:  6.5rem;
@@ -332,6 +333,7 @@ input[type='range']::-webkit-slider-runnable-track {
 textarea {
 	background-color: var(--input);
 	font-family: sourceCodePro;
+	font-size: var(--code);
 	width: calc(100% - var(--margin) * 2);
 	resize: none;
 	padding: calc(var(--margin) * 0.75) var(--margin);
