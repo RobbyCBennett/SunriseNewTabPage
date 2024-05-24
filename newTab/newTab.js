@@ -47,6 +47,8 @@ const options = {
 	customCSS: '',
 };
 
+let keyboardMode = false;
+
 
 async function displayPage()
 {
@@ -92,32 +94,32 @@ async function displayPage()
 	}
 
 	// Show settings button
-	if (options.showSettingsButton === true)
+	if (options.showSettingsButton)
 		if (element = document.getElementById('settings'))
 			element.classList.remove('hidden');
 
 	// Show time
-	if (options.showTime === true)
+	if (options.showTime)
 		if (element = document.getElementById('time'))
 			element.classList.remove('hidden');
 
 	// Show seconds
-	if (options.showSeconds === false)
+	if (!options.showSeconds)
 		if (element = document.getElementById('second'))
 			element.classList.add('hidden');
 
 	// Show AM/PM
-	if (options.showAMPM === false)
+	if (!options.showAMPM)
 		if (element = document.getElementById('amPM'))
 			element.classList.add('hidden');
 
 	// Show weekday
-	if (options.showWeekday === false)
+	if (!options.showWeekday)
 		if (element = document.getElementById('weekday'))
 			element.classList.add('hidden');
 
 	// Show date
-	if (options.showDate === true)
+	if (options.showDate)
 		if (element = document.getElementById('date'))
 			element.classList.remove('hidden');
 
@@ -127,16 +129,16 @@ async function displayPage()
 			element.innerHTML = '<span id="day"></span><span id="month"></span><span id="year"></span>'
 
 	// Show bookmarks
-	if (options.showBookmarks === false)
+	if (!options.showBookmarks)
 		if (element = document.getElementById('favoritesContainer'))
 			element.classList.add('hidden');
 
 	// Show icons
-	if (options.showIcons === false)
+	if (!options.showIcons)
 		cssVariables.setProperty('--showIcons', 'none');
 
 	// Show labels
-	if (options.showLabels === false)
+	if (!options.showLabels)
 		cssVariables.setProperty('--showLabels', 'none');
 
 	// Bookmark alignment
@@ -150,7 +152,7 @@ async function displayPage()
 	}
 
 	// Dim bookmarks
-	if (options.dimBookmarks === true)
+	if (options.dimBookmarks)
 		cssVariables.setProperty('--dimBookmarks', '50%');
 
 	// Column width
@@ -162,8 +164,7 @@ async function displayPage()
 
 	// Display the rest of the UI
 	drawTimeEverySecond(options.militaryTime);
-	if (options.showBookmarks)
-		displayBookmarks(getRootFolderId(), false);
+	displayBookmarks(getRootFolderId());
 }
 
 
@@ -234,11 +235,13 @@ function drawTime(militaryTime)
 
 
 /**
- * @param {string} currentFolderID
- * @param {boolean} shouldFocus
+ * @param {string} currentFolderId
  */
-async function displayBookmarks(currentFolderID, shouldFocus)
+async function displayBookmarks(currentFolderId)
 {
+	if (!options.showBookmarks)
+		return;
+
 	/** @type {HTMLElement | null} */
 	let element = null;
 
@@ -247,7 +250,7 @@ async function displayBookmarks(currentFolderID, shouldFocus)
 		element.innerHTML = '';
 
 	/** @ts-ignore @type {{id: string, title: string, url: string | undefined}[]} */
-	const currentFolder = await chrome.bookmarks.getChildren(currentFolderID);
+	const currentFolder = await chrome.bookmarks.getChildren(currentFolderId);
 
 	// Each link or folder
 	let rowI = -1;
@@ -297,7 +300,7 @@ async function displayBookmarks(currentFolderID, shouldFocus)
 		// Folder
 		else {
 			// At the root, skip certain folders
-			if (currentFolderID === '0')
+			if (currentFolderId === '0')
 				if ((linkOrFolder.id === '1' && !options.allowBookmarksBar)
 				|| (linkOrFolder.id === '2' && !options.allowOtherBookmarks)
 				|| (linkOrFolder.id === '3' && !options.allowMobileBookmarks))
@@ -326,11 +329,11 @@ async function displayBookmarks(currentFolderID, shouldFocus)
 	}
 
 	// Now that the bookmarks exist, possibly focus on them
-	if (shouldFocus)
+	if (keyboardMode)
 		focusOnBookmarks();
 
 	// Clear the title and back button
-	if (currentFolderID === getRootFolderId()) {
+	if (currentFolderId === getRootFolderId()) {
 		if (element = document.getElementById('currentFolder'))
 			element.innerHTML = '';
 
@@ -340,7 +343,7 @@ async function displayBookmarks(currentFolderID, shouldFocus)
 	// Set up the title and back button
 	else {
 		/** @ts-ignore @type {{title: string, parentId: string | undefined}[]} */
-		const currentFolderNodeResults = await chrome.bookmarks.get(currentFolderID);
+		const currentFolderNodeResults = await chrome.bookmarks.get(currentFolderId);
 		if (currentFolderNodeResults.length === 0)
 			return;
 		const currentFolderNode = currentFolderNodeResults[0];
@@ -450,29 +453,30 @@ function navigateWithKey(event)
 	/** @type {HTMLElement | null} */
 	let element = null;
 
-	// Decide the action
-	const ACTION_LEFT = 0;
-	const ACTION_RIGHT = 1;
-	const ACTION_DOWN = 2;
-	const ACTION_UP = 3;
-	const ACTION_BACK = 4;
-	let action = ACTION_LEFT;
+	// Decide the direction
+	const DIRECTION_LEFT = 0;
+	const DIRECTION_RIGHT = 1;
+	const DIRECTION_DOWN = 2;
+	const DIRECTION_UP = 3;
+	let direction = DIRECTION_LEFT;
 	switch (event.key) {
 		case 'ArrowLeft':
-			action = ACTION_LEFT;
+			direction = DIRECTION_LEFT;
 			break;
 		case 'ArrowRight':
-			action = ACTION_RIGHT;
+			direction = DIRECTION_RIGHT;
 			break;
 		case 'ArrowUp':
-			action = ACTION_UP;
+			direction = DIRECTION_UP;
 			break;
 		case 'ArrowDown':
-			action = ACTION_DOWN;
+			direction = DIRECTION_DOWN;
 			break;
 		case 'Backspace':
 		case 'Escape':
-			action = ACTION_BACK;
+			if (element = document.getElementById('back'))
+				if (element.classList.contains('visible'))
+					element.click();
 			break;
 		default:
 			return;
@@ -491,9 +495,9 @@ function navigateWithKey(event)
 	const row = position.row;
 	const rowCount = position.rowCount;
 
-	// Handle each action
-	switch (action) {
-		case ACTION_LEFT:
+	// Handle each direction
+	switch (direction) {
+		case DIRECTION_LEFT:
 			// Move left
 			if (col > 0) {
 				if (element = document.querySelector(`#row${row} .favorite:nth-child(${col}) :first-child`))
@@ -505,7 +509,7 @@ function navigateWithKey(event)
 					element.focus();
 			}
 			break;
-		case ACTION_RIGHT:
+		case DIRECTION_RIGHT:
 			// Move right
 			if (col < colCount - 1) {
 				if (element = document.querySelector(`#row${row} .favorite:nth-child(${col + 2}) :first-child`))
@@ -517,7 +521,7 @@ function navigateWithKey(event)
 					element.focus();
 			}
 			break;
-		case ACTION_UP:
+		case DIRECTION_UP:
 			// Move up
 			if (row > 0) {
 				// Figure out the new column
@@ -536,7 +540,7 @@ function navigateWithKey(event)
 					element.focus();
 			}
 			break;
-		case ACTION_DOWN:
+		case DIRECTION_DOWN:
 			// Move down
 			if (row < rowCount - 1) {
 				// Figure out the new column
@@ -564,11 +568,6 @@ function navigateWithKey(event)
 					element.focus();
 			}
 			break;
-		case ACTION_BACK:
-			if (element = document.getElementById('back'))
-				if (element.classList.contains('visible'))
-					element.click();
-			break;
 	}
 }
 
@@ -583,14 +582,18 @@ function onClickFolder(event)
 		return;
 
 	// Fail if no folder ID
-	const newFolderID = event.target.dataset.id;
-	if (newFolderID === undefined)
+	const newFolderId = event.target.dataset.id;
+	if (newFolderId === undefined)
 		return;
 
-	// Should focus if it wasn't a single click
-	const shouldFocus = event.detail !== 1;
+	// Use back/forward buttons in the history
+	if (event.target.id === 'back')
+		history.back();
+	else
+		window.location.hash = `#${newFolderId}`;
 
-	displayBookmarks(newFolderID, shouldFocus);
+	// Should focus if it wasn't a single click
+	keyboardMode = event.detail !== 1;
 }
 
 
@@ -601,6 +604,19 @@ function onClickSettings(event)
 {
 	// @ts-ignore
 	chrome.tabs.create({'url': '/options/options.html'});
+}
+
+
+/**
+ * @param {HashChangeEvent} event
+ */
+function onHashChange(event)
+{
+	const match = window.location.hash.match(/^#(\d+)$/);
+	if (match !== null)
+		displayBookmarks(match[1]);
+	else
+		displayBookmarks(getRootFolderId());
 }
 
 
@@ -634,6 +650,7 @@ async function setOptions()
 async function main()
 {
 	// Set event handlers
+	window.onhashchange = onHashChange;
 	document.onkeydown = navigateWithKey;
 	const settingsButton = document.getElementById('settings');
 	if (settingsButton !== null)
