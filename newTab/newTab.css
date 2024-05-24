@@ -175,6 +175,12 @@ h2 {
 
 
 /* Favorites */
+#favoritesContainer {
+	display: none;
+}
+#favoritesContainer.visible {
+	display: inherit;
+}
 #favorites {
 	width: max-content;
     max-height: 25vh;

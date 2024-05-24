@@ -246,6 +246,8 @@ async function displayBookmarks(currentFolderId)
 	let element = null;
 
 	// Clear the current view of favorites
+	if (element = document.getElementById('favoritesContainer'))
+		element.classList.remove('visible');
 	if (element = document.getElementById('favorites'))
 		element.innerHTML = '';
 
@@ -344,25 +346,26 @@ async function displayBookmarks(currentFolderId)
 	else {
 		/** @ts-ignore @type {{title: string, parentId: string | undefined}[]} */
 		const currentFolderNodeResults = await chrome.bookmarks.get(currentFolderId);
-		if (currentFolderNodeResults.length === 0)
-			return;
-		const currentFolderNode = currentFolderNodeResults[0];
+		if (currentFolderNodeResults.length !== 0) {
+			const currentFolderNode = currentFolderNodeResults[0];
 
-		// Title
-		if (element = document.getElementById('currentFolder'))
-			element.innerHTML = currentFolderNode.title;
+			// Title
+			if (element = document.getElementById('currentFolder'))
+				element.innerHTML = currentFolderNode.title;
 
-		const parentFolderId = currentFolderNode.parentId;
-		if (!parentFolderId)
-			return;
-
-		// Back button
-		if (element = document.getElementById('back')) {
-			element.className = 'visible';
-			element.dataset.id = parentFolderId;
-			element.onclick = onClickFolder;
+			// Back button
+			if (currentFolderNode.parentId) {
+				if (element = document.getElementById('back')) {
+					element.className = 'visible';
+					element.dataset.id = currentFolderNode.parentId;
+					element.onclick = onClickFolder;
+				}
+			}
 		}
 	}
+
+	if (element = document.getElementById('favoritesContainer'))
+		element.classList.add('visible');
 }
 
 
