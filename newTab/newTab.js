@@ -48,6 +48,7 @@ const options = {
 };
 
 let keyboardMode = false;
+let workingOnBookmarks = false;
 
 
 async function displayPage()
@@ -164,7 +165,7 @@ async function displayPage()
 
 	// Display the rest of the UI
 	drawTimeEverySecond(options.militaryTime);
-	displayBookmarks(getRootFolderId());
+	displayBookmarks(getFolderIdFromHash());
 }
 
 
@@ -239,8 +240,9 @@ function drawTime(militaryTime)
  */
 async function displayBookmarks(currentFolderId)
 {
-	if (!options.showBookmarks)
+	if (!options.showBookmarks || workingOnBookmarks)
 		return;
+	workingOnBookmarks = true;
 
 	/** @type {HTMLElement | null} */
 	let element = null;
@@ -313,20 +315,19 @@ async function displayBookmarks(currentFolderId)
 			favorite.className = 'favorite folder';
 			row.appendChild(favorite);
 
-			// Button
-			const button = document.createElement('button');
-			button.className = 'linkOrFolder';
-			button.dataset.id = linkOrFolder.id;
-			button.dataset.col = colI.toString();
-			button.dataset.row = rowI.toString();
-			button.onclick = onClickFolder;
-			button.innerHTML = SVG_FOLDER;
-			favorite.appendChild(button);
+			// Link
+			let anchor = document.createElement('a');
+			anchor.className = 'linkOrFolder';
+			anchor.href = `#${linkOrFolder.id}`;
+			anchor.dataset.col = colI.toString();
+			anchor.dataset.row = rowI.toString();
+			anchor.innerHTML = SVG_FOLDER;
+			favorite.appendChild(anchor);
 
 			// Text
 			const paragraph = document.createElement('p');
 			paragraph.innerHTML = linkOrFolder.title;
-			button.appendChild(paragraph);
+			anchor.appendChild(paragraph);
 		}
 	}
 
@@ -358,7 +359,7 @@ async function displayBookmarks(currentFolderId)
 				if (element = document.getElementById('back')) {
 					element.className = 'visible';
 					element.dataset.id = currentFolderNode.parentId;
-					element.onclick = onClickFolder;
+					element.onclick = onClickBack;
 				}
 			}
 		}
@@ -366,6 +367,8 @@ async function displayBookmarks(currentFolderId)
 
 	if (element = document.getElementById('favoritesContainer'))
 		element.classList.add('visible');
+
+	workingOnBookmarks = false;
 }
 
 
@@ -390,6 +393,13 @@ function focusOnBookmarks()
 	const newFocus = document.querySelector('#row0 .favorite:first-child :first-child');
 	if (newFocus instanceof HTMLElement)
 		newFocus.focus();
+}
+
+
+function getFolderIdFromHash()
+{
+	const match = window.location.hash.match(/^#(\d+)$/);
+	return match ? match[1] : getRootFolderId();
 }
 
 
@@ -576,34 +586,18 @@ function navigateWithKey(event)
 
 
 /**
- * @param {MouseEvent} event
+ * @param {MouseEvent} _event
  */
-function onClickFolder(event)
+function onClickBack(_event)
 {
-	// Fail if no target
-	if (!(event.target instanceof HTMLElement))
-		return;
-
-	// Fail if no folder ID
-	const newFolderId = event.target.dataset.id;
-	if (newFolderId === undefined)
-		return;
-
-	// Use back/forward buttons in the history
-	if (event.target.id === 'back')
-		history.back();
-	else
-		window.location.hash = `#${newFolderId}`;
-
-	// Should focus if it wasn't a single click
-	keyboardMode = event.detail !== 1;
+	history.back();
 }
 
 
 /**
- * @param {MouseEvent} event
+ * @param {MouseEvent} _event
  */
-function onClickSettings(event)
+function onClickSettings(_event)
 {
 	// @ts-ignore
 	chrome.tabs.create({'url': '/options/options.html'});
@@ -611,15 +605,11 @@ function onClickSettings(event)
 
 
 /**
- * @param {HashChangeEvent} event
+ * @param {HashChangeEvent} _event
  */
-function onHashChange(event)
+function onHashChange(_event)
 {
-	const match = window.location.hash.match(/^#(\d+)$/);
-	if (match !== null)
-		displayBookmarks(match[1]);
-	else
-		displayBookmarks(getRootFolderId());
+	displayBookmarks(getFolderIdFromHash());
 }
 
 
@@ -661,6 +651,9 @@ async function main()
 
 	// Set variables
 	await setOptions();
+
+	if (window.location.hash.length)
+		window.location.hash = '';
 
 	displayPage();
 }

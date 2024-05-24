@@ -176,10 +176,10 @@ h2 {
 
 /* Favorites */
 #favoritesContainer {
-	display: none;
+	opacity: 0;
 }
 #favoritesContainer.visible {
-	display: inherit;
+	opacity: 100%;
 }
 #favorites {
 	width: max-content;
