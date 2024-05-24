@@ -81,6 +81,9 @@ button {
 	padding: 0;
 	cursor: pointer;
 }
+button > * {
+	pointer-events: none;
+}
 .fadeIn {
 	animation-name: fadeIn;
 	animation-duration: 1s;

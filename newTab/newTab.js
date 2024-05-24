@@ -1,541 +1,649 @@
-// Default options
-const options = {};
-async function setDefaults() {
-	// Get options
-	const defaultOptions = {
-		// Theme
-		backgroundOverlayColor: '#000000',
-		backgroundOverlayOpacity: 35,
-		textColor: '#FFFFFF',
-		mainFont: 'Montserrat',
-		accentFont: 'Marck Script',
-		zoomLevel: 100,
-		verticallyCenterEverything: false,
-		showSettingsButton: true,
+// @ts-check
+'use strict';
 
-		// Time
-		showTime: true,
-		showSeconds: false,
-		showAMPM: false,
-		militaryTime: false,
 
-		// Weekday
-		showWeekday: true,
+const SVG_FOLDER = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M9.6,2.4H2.4C1.1,2.4,0,3.5,0,4.8l0,14.4c0,1.3,1.1,2.4,2.4,2.4h19.2c1.3,0,2.4-1.1,2.4-2.4v-12 c0-1.3-1.1-2.4-2.4-2.4H12L9.6,2.4z"/></svg>';
 
-		// Date
-		showDate: true,
-		dateFormat: 'm d, y',
+const SVG_LINK = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M12,0C5.4,0,0,5.4,0,12s5.4,12,12,12s12-5.4,12-12S18.6,0,12,0z M10.8,21.5c-4.7-0.6-8.4-4.6-8.4-9.5 c0-0.7,0.1-1.5,0.3-2.1l5.7,5.7v1.2c0,1.3,1.1,2.4,2.4,2.4V21.5z M19.1,18.5c-0.3-1-1.2-1.7-2.3-1.7h-1.2v-3.6 c0-0.7-0.5-1.2-1.2-1.2H7.2V9.6h2.4c0.7,0,1.2-0.5,1.2-1.2V6h2.4c1.3,0,2.4-1.1,2.4-2.4V3.1c3.5,1.4,6,4.9,6,8.9 C21.6,14.5,20.6,16.8,19.1,18.5z"/></svg>';
 
-		// Bookmarks
-		showBookmarks: true,
-		showIcons: true,
-		showLabels: true,
-		bookmarkAlignment: 'left',
-		allowBookmarksBar: true,
-		allowOtherBookmarks: false,
-		allowMobileBookmarks: false,
-		dimBookmarks: true,
-		numberOfColumns: 5,
-		columnWidth: 8,
+const options = {
+	// Theme
+	backgroundImage: '',
+	backgroundOverlayColor: '#000000',
+	backgroundOverlayOpacity: 35,
+	textColor: '#FFFFFF',
+	mainFont: 'Montserrat',
+	accentFont: 'Marck Script',
+	zoomLevel: 100,
+	verticallyCenterEverything: false,
+	showSettingsButton: true,
 
-		// Advanced
-		customCSS: '',
+	// Time
+	showTime: true,
+	showSeconds: false,
+	showAMPM: false,
+	militaryTime: false,
+
+	// Weekday
+	showWeekday: true,
+
+	// Date
+	showDate: true,
+	dateFormat: 'm d, y',
+
+	// Bookmarks
+	showBookmarks: true,
+	showIcons: true,
+	showLabels: true,
+	bookmarkAlignment: 'left',
+	allowBookmarksBar: true,
+	allowOtherBookmarks: false,
+	allowMobileBookmarks: false,
+	dimBookmarks: true,
+	numberOfColumns: 5,
+	columnWidth: 8,
+
+	// Advanced
+	customCSS: '',
+};
+
+
+async function displayPage()
+{
+	/** @type {HTMLElement | null} */
+	let element = null;
+
+	// Background image
+	if (element = document.getElementById('background')) {
+		if (options.backgroundImage.length)
+			element.style.backgroundImage = `url(${options.backgroundImage})`;
+		else
+			element.style.backgroundImage = 'url(/assets/mountain.webp)';
+	}
+
+	// Overlay color & opacity
+	const color = hexToRGB(options.backgroundOverlayColor);
+	const fullOverlayColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${options.backgroundOverlayOpacity / 100})`;
+	if (element = document.getElementById('overlay'))
+		element.style.backgroundColor = fullOverlayColor;
+
+	// Text color
+	const cssVariables = document.documentElement.style;
+	cssVariables.setProperty('--textColor', options.textColor);
+
+	// Fonts
+	cssVariables.setProperty('--mainFont', options.mainFont);
+	cssVariables.setProperty('--accentFont', options.accentFont);
+
+	// Zoom level
+	cssVariables.setProperty('--zoomLevel', `${options.zoomLevel}%`);
+
+	// Vertically center everything
+	if (options.verticallyCenterEverything) {
+		if (element = document.getElementById('timeAndDate'))
+			element.classList.add('topThird');
+		if (element = document.getElementById('favoritesContainer'))
+			element.classList.add('bottomThird');
+	} else {
+		if (element = document.getElementById('timeAndDate'))
+			element.classList.add('verticalCenter');
+		if (element = document.getElementById('favoritesContainer'))
+			element.classList.add('bottom');
+	}
+
+	// Show settings button
+	if (options.showSettingsButton === true)
+		if (element = document.getElementById('settings'))
+			element.classList.remove('hidden');
+
+	// Show time
+	if (options.showTime === true)
+		if (element = document.getElementById('time'))
+			element.classList.remove('hidden');
+
+	// Show seconds
+	if (options.showSeconds === false)
+		if (element = document.getElementById('second'))
+			element.classList.add('hidden');
+
+	// Show AM/PM
+	if (options.showAMPM === false)
+		if (element = document.getElementById('amPM'))
+			element.classList.add('hidden');
+
+	// Show weekday
+	if (options.showWeekday === false)
+		if (element = document.getElementById('weekday'))
+			element.classList.add('hidden');
+
+	// Show date
+	if (options.showDate === true)
+		if (element = document.getElementById('date'))
+			element.classList.remove('hidden');
+
+	// Date format
+	if (options.dateFormat === 'd m y')
+		if (element = document.getElementById('date'))
+			element.innerHTML = '<span id="day"></span><span id="month"></span><span id="year"></span>'
+
+	// Show bookmarks
+	if (options.showBookmarks === false)
+		if (element = document.getElementById('favoritesContainer'))
+			element.classList.add('hidden');
+
+	// Show icons
+	if (options.showIcons === false)
+		cssVariables.setProperty('--showIcons', 'none');
+
+	// Show labels
+	if (options.showLabels === false)
+		cssVariables.setProperty('--showLabels', 'none');
+
+	// Bookmark alignment
+	if (element = document.getElementById('favorites')) {
+		if (options.bookmarkAlignment === 'center')
+			element.classList.add('center');
+		else if (options.bookmarkAlignment === 'right')
+			element.classList.add('right');
+		else
+			element.classList.add('left');
+	}
+
+	// Dim bookmarks
+	if (options.dimBookmarks === true)
+		cssVariables.setProperty('--dimBookmarks', '50%');
+
+	// Column width
+	cssVariables.setProperty('--columnWidth', options.columnWidth + 'rem');
+
+	// Advanced
+	if (element = document.getElementById('customCSS'))
+		element.innerHTML = options.customCSS;
+
+	// Display the rest of the UI
+	drawTimeEverySecond(options.militaryTime);
+	if (options.showBookmarks)
+		displayBookmarks(getRootFolderId(), false);
+}
+
+
+/**
+ * @param {boolean} militaryTime
+ */
+function drawTime(militaryTime)
+{
+	const date = new Date();
+
+	let hour = date.getHours().toString();
+	let minute = date.getMinutes().toString();
+	let second = date.getSeconds().toString();
+	let amPM = '';
+
+	// Set hour
+	if (militaryTime) {
+		if (date.getHours() < 10)
+			hour = '0' + date.getHours().toString();
+	}
+	// Set hour and AM/PM
+	else {
+		amPM = 'AM';
+		if (date.getHours() == 0) {
+			hour = '12';
+		}
+		else if (date.getHours() > 12) {
+			amPM = 'PM';
+			hour = (date.getHours() - 12).toString();
+		}
+		else if (date.getHours() == 12) {
+			amPM = 'PM';
+		}
+	}
+
+	// Set minutes
+	if (date.getMinutes() < 10)
+		minute = `0${date.getMinutes()}`;
+	// Set seconds
+	if (date.getSeconds() < 10)
+		second = `0${date.getSeconds()}`;
+
+	/** @type {HTMLElement | null} */
+	let element = null;
+
+	// Display time
+	if (element = document.getElementById('hour'))
+		element.textContent = hour;
+	if (element = document.getElementById('minute'))
+		element.textContent = minute;
+	if (element = document.getElementById('second'))
+		element.textContent = second;
+	if (element = document.getElementById('amPM'))
+		element.textContent = amPM;
+
+	// Display weekday
+	if (element = document.getElementById('weekday'))
+		element.textContent = date.toLocaleString('default', {weekday: 'long'});;
+
+	// Display date
+	if (element = document.getElementById('month'))
+		element.textContent = date.toLocaleString('default', {month: 'long'});
+	if (element = document.getElementById('day'))
+		element.textContent = date.getDate().toString();
+	if (element = document.getElementById('year'))
+		element.textContent = date.getFullYear().toString();
+}
+
+
+/**
+ * @param {string} currentFolderID
+ * @param {boolean} shouldFocus
+ */
+async function displayBookmarks(currentFolderID, shouldFocus)
+{
+	/** @type {HTMLElement | null} */
+	let element = null;
+
+	// Clear the current view of favorites
+	if (element = document.getElementById('favorites'))
+		element.innerHTML = '';
+
+	/** @ts-ignore @type {{id: string, title: string, url: string | undefined}[]} */
+	const currentFolder = await chrome.bookmarks.getChildren(currentFolderID);
+
+	// Each link or folder
+	let rowI = -1;
+	for (let i = 0; i < currentFolder.length; i++) {
+		// Get child of current folder
+		const linkOrFolder = currentFolder[i];
+
+		// New row
+		const colI = i % options.numberOfColumns;
+		if (colI === 0) {
+			rowI++;
+			const row = document.createElement('div');
+			row.className = 'row';
+			row.id = `row${rowI}`;
+			if (element = document.getElementById('favorites'))
+				element.appendChild(row);
+		}
+
+		// Get row
+		const row = document.getElementById(`row${rowI}`);
+		if (row === null)
+			continue;
+
+		// Link
+		if (linkOrFolder.url !== undefined) {
+			// Favorite container
+			const favorite = document.createElement('div');
+			favorite.dataset.col = colI.toString();
+			favorite.dataset.row = rowI.toString();
+			favorite.className = 'favorite website';
+			row.appendChild(favorite);
+
+			// Link
+			let anchor = document.createElement('a');
+			anchor.className = 'linkOrFolder';
+			anchor.href = linkOrFolder.url;
+			anchor.dataset.col = colI.toString();
+			anchor.dataset.row = rowI.toString();
+			anchor.innerHTML = SVG_LINK;
+			favorite.appendChild(anchor);
+
+			// Text
+			const paragraph = document.createElement('p');
+			paragraph.innerHTML = linkOrFolder.title;
+			anchor.appendChild(paragraph);
+		}
+		// Folder
+		else {
+			// At the root, skip certain folders
+			if (currentFolderID === '0')
+				if ((linkOrFolder.id === '1' && !options.allowBookmarksBar)
+				|| (linkOrFolder.id === '2' && !options.allowOtherBookmarks)
+				|| (linkOrFolder.id === '3' && !options.allowMobileBookmarks))
+					continue;
+
+			// Favorite container
+			const favorite = document.createElement('div');
+			favorite.className = 'favorite folder';
+			row.appendChild(favorite);
+
+			// Button
+			const button = document.createElement('button');
+			button.className = 'linkOrFolder';
+			button.dataset.id = linkOrFolder.id;
+			button.dataset.col = colI.toString();
+			button.dataset.row = rowI.toString();
+			button.onclick = onClickFolder;
+			button.innerHTML = SVG_FOLDER;
+			favorite.appendChild(button);
+
+			// Text
+			const paragraph = document.createElement('p');
+			paragraph.innerHTML = linkOrFolder.title;
+			button.appendChild(paragraph);
+		}
+	}
+
+	// Now that the bookmarks exist, possibly focus on them
+	if (shouldFocus)
+		focusOnBookmarks();
+
+	// Clear the title and back button
+	if (currentFolderID === getRootFolderId()) {
+		if (element = document.getElementById('currentFolder'))
+			element.innerHTML = '';
+
+		if (element = document.getElementById('back'))
+			element.className = '';
+	}
+	// Set up the title and back button
+	else {
+		/** @ts-ignore @type {{title: string, parentId: string | undefined}[]} */
+		const currentFolderNodeResults = await chrome.bookmarks.get(currentFolderID);
+		if (currentFolderNodeResults.length === 0)
+			return;
+		const currentFolderNode = currentFolderNodeResults[0];
+
+		// Title
+		if (element = document.getElementById('currentFolder'))
+			element.innerHTML = currentFolderNode.title;
+
+		const parentFolderId = currentFolderNode.parentId;
+		if (!parentFolderId)
+			return;
+
+		// Back button
+		if (element = document.getElementById('back')) {
+			element.className = 'visible';
+			element.dataset.id = parentFolderId;
+			element.onclick = onClickFolder;
+		}
+	}
+}
+
+
+/**
+ * @param {boolean} militaryTime
+ */
+function drawTimeEverySecond(militaryTime)
+{
+	drawTime(militaryTime);
+
+	setTimeout(function() {
+		setInterval(function() {
+			drawTime(militaryTime);
+		}, 1000);
+		drawTime(militaryTime);
+	}, 1000 - new Date().getMilliseconds());
+}
+
+
+function focusOnBookmarks()
+{
+	const newFocus = document.querySelector('#row0 .favorite:first-child :first-child');
+	if (newFocus instanceof HTMLElement)
+		newFocus.focus();
+}
+
+
+/**
+ * @arg {HTMLElement} linkOrFolder
+ */
+function getPosition(linkOrFolder)
+{
+	// Fail if somehow not a link/folder
+	if (linkOrFolder.dataset.col === undefined || linkOrFolder.dataset.row === undefined)
+		return null;
+
+	// Fail if somehow not in a row
+	const rowElement = linkOrFolder.parentElement?.parentElement;
+	if (!rowElement)
+		return null;
+
+	// Fail if somehow not in a row
+	const rowsElement = rowElement.parentElement;
+	if (!rowsElement)
+		return null;
+
+	return {
+		col: parseInt(linkOrFolder.dataset.col),
+		colCount: rowElement.children.length,
+		row: parseInt(linkOrFolder.dataset.row),
+		rowCount: rowsElement.children.length,
 	};
-	Object.assign(options, await chrome.storage.local.get())
+}
 
-	// Get keys & values of unsaved options
+
+function getRootFolderId()
+{
+	if (options.allowBookmarksBar && !options.allowOtherBookmarks && !options.allowMobileBookmarks)
+		return '1';
+	else if (!options.allowBookmarksBar && options.allowOtherBookmarks && !options.allowMobileBookmarks)
+		return '2';
+	else if (!options.allowBookmarksBar && !options.allowOtherBookmarks && options.allowMobileBookmarks)
+		return '3';
+	else
+		return '0';
+}
+
+
+/**
+ * @param {string} hex like '#000000'
+ */
+function hexToRGB(hex)
+{
+	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return {
+		r: (result !== null) ? parseInt(result[1], 16) : 0,
+		g: (result !== null) ? parseInt(result[2], 16) : 0,
+		b: (result !== null) ? parseInt(result[3], 16) : 0,
+	};
+}
+
+
+/**
+ * @param {KeyboardEvent} event
+ */
+function navigateWithKey(event)
+{
+	/** @type {HTMLElement | null} */
+	let element = null;
+
+	// Decide the action
+	const ACTION_LEFT = 0;
+	const ACTION_RIGHT = 1;
+	const ACTION_DOWN = 2;
+	const ACTION_UP = 3;
+	const ACTION_BACK = 4;
+	let action = ACTION_LEFT;
+	switch (event.key) {
+		case 'ArrowLeft':
+			action = ACTION_LEFT;
+			break;
+		case 'ArrowRight':
+			action = ACTION_RIGHT;
+			break;
+		case 'ArrowUp':
+			action = ACTION_UP;
+			break;
+		case 'ArrowDown':
+			action = ACTION_DOWN;
+			break;
+		case 'Backspace':
+		case 'Escape':
+			action = ACTION_BACK;
+			break;
+		default:
+			return;
+	}
+
+	// Stop early if the focused element isn't a favorite link/folder
+	if (!(document.activeElement instanceof HTMLElement) || !document.activeElement.classList.contains('linkOrFolder'))
+		return focusOnBookmarks();
+
+	// Get position
+	const position = getPosition(document.activeElement);
+	if (position === null)
+		return;
+	const col = position.col;
+	const colCount = position.colCount;
+	const row = position.row;
+	const rowCount = position.rowCount;
+
+	// Handle each action
+	switch (action) {
+		case ACTION_LEFT:
+			// Move left
+			if (col > 0) {
+				if (element = document.querySelector(`#row${row} .favorite:nth-child(${col}) :first-child`))
+					element.focus();
+			}
+			// Move up & far right
+			else if (row > 0) {
+				if (element = document.querySelector(`#row${row - 1} .favorite:last-child :first-child`))
+					element.focus();
+			}
+			break;
+		case ACTION_RIGHT:
+			// Move right
+			if (col < colCount - 1) {
+				if (element = document.querySelector(`#row${row} .favorite:nth-child(${col + 2}) :first-child`))
+					element.focus();
+			}
+			// Move down & far left
+			else if (row < rowCount - 1) {
+				if (element = document.querySelector(`#row${row + 1} .favorite:nth-child(1) :first-child`))
+					element.focus();
+			}
+			break;
+		case ACTION_UP:
+			// Move up
+			if (row > 0) {
+				// Figure out the new column
+				let newCol = col + 1;
+				const newColCount = document.querySelector(`#row${row - 1}`)?.children.length;
+				if (newColCount === undefined)
+					break;
+				if (newColCount !== colCount) {
+					if (options.bookmarkAlignment == 'center')
+						newCol = col + 1 - Math.ceil((colCount - newColCount) / 2);
+					else if (options.bookmarkAlignment == 'right')
+						newCol = col + 1 - (colCount - newColCount);
+				}
+
+				if (element = document.querySelector(`#row${row - 1} .favorite:nth-child(${newCol}) :first-child`))
+					element.focus();
+			}
+			break;
+		case ACTION_DOWN:
+			// Move down
+			if (row < rowCount - 1) {
+				// Figure out the new column
+				let newCol = col + 1;
+				const newColCount = document.querySelector(`#row${row + 1}`)?.children.length;
+				if (newColCount === undefined)
+					break;
+				if (newColCount != colCount) {
+					if (options.bookmarkAlignment == 'left' && newCol > newColCount) {
+						newCol = newColCount;
+					} else if (options.bookmarkAlignment == 'center') {
+						newCol = col + 1 - Math.ceil((colCount - newColCount) / 2);
+						if (newCol < 1)
+							newCol = 1;
+						else if (newCol > newColCount)
+							newCol = newColCount;
+					} else if (options.bookmarkAlignment == 'right') {
+						newCol = col + 1 - (colCount - newColCount);
+						if (newCol < 1)
+							newCol = 1;
+					}
+				}
+
+				if (element = document.querySelector(`#row${row + 1} .favorite:nth-child(${newCol}) :first-child`))
+					element.focus();
+			}
+			break;
+		case ACTION_BACK:
+			if (element = document.getElementById('back'))
+				if (element.classList.contains('visible'))
+					element.click();
+			break;
+	}
+}
+
+
+/**
+ * @param {MouseEvent} event
+ */
+function onClickFolder(event)
+{
+	// Fail if no target
+	if (!(event.target instanceof HTMLElement))
+		return;
+
+	// Fail if no folder ID
+	const newFolderID = event.target.dataset.id;
+	if (newFolderID === undefined)
+		return;
+
+	// Should focus if it wasn't a single click
+	const shouldFocus = event.detail !== 1;
+
+	displayBookmarks(newFolderID, shouldFocus);
+}
+
+
+/**
+ * @param {MouseEvent} event
+ */
+function onClickSettings(event)
+{
+	// @ts-ignore
+	chrome.tabs.create({'url': '/options/options.html'});
+}
+
+
+async function setOptions()
+{
+	// Get user options into the result and remember the unsaved options
+	/** @ts-ignore @type {{}} */
+	const userOptions = await chrome.storage.local.get();
 	const unsavedOptions = {};
-	for (const [key, value] of Object.entries(defaultOptions)) {
-		if (options[key] === undefined) {
-			options[key] = value;
-			unsavedOptions[key] = value;
+	let hasUnsavedOptions = false;
+	for (const key of Object.keys(options)) {
+		// Overwrite with a valid user option
+		if (userOptions.hasOwnProperty(key) && typeof(options[key]) === typeof(userOptions[key])) {
+			options[key] = userOptions[key];
+		}
+		// Remember to save the unsaved option
+		else {
+			unsavedOptions[key] = options[key];
+			hasUnsavedOptions = true;
 		}
 	}
 
 	// Save unsaved options
-	if (Object.keys(unsavedOptions).length) {
+	if (hasUnsavedOptions) {
+		// @ts-ignore
 		chrome.storage.local.set(unsavedOptions);
 	}
 }
 
 
+async function main()
+{
+	// Set event handlers
+	document.onkeydown = navigateWithKey;
+	const settingsButton = document.getElementById('settings');
+	if (settingsButton !== null)
+		settingsButton.onclick = onClickSettings;
 
-let rootFolderID = null;
-let currentFolderID = null;
+	// Set variables
+	await setOptions();
 
-function hexToRGB(hex) {
-	let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	return result ? {
-		r: parseInt(result[1], 16),
-		g: parseInt(result[2], 16),
-		b: parseInt(result[3], 16)
-	} : null;
-}
-
-function isRealClick(e) {
-	return (e.screenX && e.screenX != 0) && (e.screenY && e.screenY != 0);
-}
-
-async function loadBackgroundImage() {
-	const div = document.getElementById('background');
-
-	if (options['backgroundImage']) {
-		div.style.backgroundImage = 'url(' + options['backgroundImage'] + ')';
-	} else {
-		div.style.backgroundImage = 'url(/assets/mountain.webp)';
-	}
-}
-
-async function loadOptions() {
-	// Overlay Color & Opacity
-	color = hexToRGB(options.backgroundOverlayColor);
-	fullOverlayColor = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b + ', ' + options.backgroundOverlayOpacity / 100 + ')';
-	document.getElementById('overlay').style.backgroundColor = fullOverlayColor;
-
-	// Text Color
-	cssVariables = document.documentElement.style;
-	cssVariables.setProperty('--textColor', options.textColor);
-
-	// Main Font
-	cssVariables.setProperty('--mainFont', options.mainFont);
-
-	// Accent Font
-	cssVariables.setProperty('--accentFont', options.accentFont);
-
-	// Accent Font
-	cssVariables.setProperty('--zoomLevel', String(options.zoomLevel) + '%');
-
-	// Vertically Center Everything
-	if (options.verticallyCenterEverything === true) {
-		document.getElementById('timeAndDate').classList.add('topThird');
-		document.getElementById('favoritesContainer').classList.add('bottomThird');
-	} else {
-		document.getElementById('timeAndDate').classList.add('verticalCenter');
-		document.getElementById('favoritesContainer').classList.add('bottom');
-	}
-
-	// Show Settings Button
-	if (options.showSettingsButton === true) {
-		document.getElementById('settings').classList.remove('hidden');
-	}
-
-	// Show Time
-	if (options.showTime === true) {
-		document.getElementById('time').classList.remove('hidden');
-	}
-
-	// Show Seconds
-	if (options.showSeconds === false) {
-		document.getElementById('second').classList.add('hidden');
-	}
-
-	// Show AP/PM
-	if (options.showAMPM === false) {
-		document.getElementById('amPM').classList.add('hidden');
-	}
-
-	// Show Weekday
-	if (options.showWeekday === false) {
-		document.getElementById('weekday').classList.add('hidden');
-	}
-
-	// Show Date
-	if (options.showDate === true) {
-		document.getElementById('date').classList.remove('hidden');
-	}
-
-	// Date Format
-	if (options.dateFormat === 'd m y') {
-		document.getElementById('date').innerHTML = '<span id="day"></span><span id="month"></span><span id="year"></span>'
-	}
-
-	// Show Bookmarks
-	if (options.showBookmarks === false) {
-		document.getElementById('favoritesContainer').classList.add('hidden');
-	}
-
-	// Show Icons
-	if (options.showIcons === false) {
-		cssVariables.setProperty('--showIcons', 'none');
-	}
-
-	// Show Labels
-	if (options.showLabels === false) {
-		cssVariables.setProperty('--showLabels', 'none');
-	}
-
-	// Bookmark Alignment
-	if (options.bookmarkAlignment === 'center') {
-		document.getElementById('favorites').classList.add('center');
-	} else if (options.bookmarkAlignment === 'right') {
-		document.getElementById('favorites').classList.add('right');
-	} else {
-		document.getElementById('favorites').classList.add('left');
-	}
-
-	// Dim Bookmarks
-	if (options.dimBookmarks === true) {
-		cssVariables.setProperty('--dimBookmarks', '50%');
-	}
-
-	// Column Width
-	cssVariables.setProperty('--columnWidth', options.columnWidth + 'rem');
-
-	// Advanced
-	document.getElementById('customCSS').innerHTML = options.customCSS;
-
-	// Load the UI
-	updateTimeEverySecond(options.militaryTime);
-	displayBookmarks(options.showBookmarks, options.allowBookmarksBar, options.allowOtherBookmarks, options.allowMobileBookmarks, currentFolderID, options.numberOfColumns, false);
-}
-
-function updateTime(militaryTime) {
-	// Time
-	hourSpan = document.getElementById('hour');
-	minuteSpan = document.getElementById('minute');
-	secondSpan = document.getElementById('second');
-	amPMSpan = document.getElementById('amPM');
-
-	date = new Date();
-	hour = date.getHours();
-	minute = date.getMinutes();
-	second = date.getSeconds();
-	amPM = '';
-
-	if (militaryTime) {
-		if (hour < 10) {
-			hour = '0' + hour;
-		}
-	}
-	else {
-		amPM = 'AM';
-		if (hour == 0) {
-			hour = 12;
-		}
-		else if (hour > 12) {
-			amPM = 'PM';
-			hour -= 12;
-		}
-		else if (hour == 12) {
-			amPM = 'PM';
-		}
-	}
-
-	if (minute < 10) {
-		minute = '0' + minute;
-	}
-	if (second < 10) {
-		second = '0' + second;
-	}
-
-	if (hourSpan != null) {
-		hourSpan.textContent = hour;
-	}
-	if (minuteSpan != null) {
-		minuteSpan.textContent = minute;
-	}
-	if (secondSpan != null) {
-		secondSpan.textContent = second;
-	}
-	if (amPMSpan != null) {
-		amPMSpan.textContent = amPM;
-	}
-
-
-	// Weekday
-	weekdaySpan = document.getElementById('weekday');
-	weekday = date.toLocaleString('default', { weekday: 'long' });
-	if (weekdaySpan != null) {
-		weekdaySpan.textContent = weekday;
-	}
-
-
-	// Date
-	monthSpan = document.getElementById('month');
-	month = date.toLocaleString('default', { month: 'long' });
-	if (monthSpan != null) {
-		monthSpan.textContent = month;
-	}
-
-	daySpan = document.getElementById('day');
-	day = date.getDate();
-	if (daySpan != null) {
-		daySpan.textContent = day;
-	}
-
-	yearSpan = document.getElementById('year');
-	year = date.getFullYear();
-	if (yearSpan != null) {
-		yearSpan.textContent = year;
-	}
+	displayPage();
 }
 
 
-// Update the time every second
-function updateTimeEverySecond(militaryTime) {
-	updateTime(militaryTime);
-
-	date = new Date();
-	millisecondsLeft = date.getMilliseconds();
-
-	setTimeout(function() {
-		updateTime(militaryTime);
-		setInterval(function() {
-			updateTime(militaryTime);
-		}, 1000);
-	}, millisecondsLeft);
-}
-
-
-
-// Bookmarks
-function displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, currentFolderID, numberOfColumns, shouldFocus) {
-	if (showBookmarks) {
-		// Clear the current view of favorites
-		favorites = document.getElementById('favorites');
-		favorites.innerHTML = '';
-
-		// Decide what folders to start with
-		if (rootFolderID == null) {
-			rootFolderID = '0';
-
-			if (allowBookmarksBar && !allowOtherBookmarks && !allowMobileBookmarks) {
-				rootFolderID = '1';
-			}
-			else if (!allowBookmarksBar && allowOtherBookmarks && !allowMobileBookmarks) {
-				rootFolderID = '2';
-			}
-			else if (!allowBookmarksBar && !allowOtherBookmarks && allowMobileBookmarks) {
-				rootFolderID = '3';
-			}
-
-			currentFolderID = rootFolderID;
-		}
-
-		chrome.bookmarks.getChildren(currentFolderID, function getBookmarks(currentFolder) {
-			rowI = -1;
-			for (let i = 0; i < currentFolder.length; i++) {
-				linkOrFolder = currentFolder[i];
-
-				// New row
-				if (i % numberOfColumns == 0) {
-					rowI++;
-
-					let row = document.createElement('div');
-					row.className = 'row';
-					row.id = 'row' + rowI;
-					favorites.appendChild(row)
-				}
-
-				// Link
-				row = document.getElementById('row' + rowI);
-				if (linkOrFolder.url != null) {
-					let favorite = document.createElement('div');
-					favorite.dataset.id = 'link' + String(i);
-					favorite.className = 'favorite website';
-					row.appendChild(favorite);
-
-					let anchor = document.createElement('a');
-					anchor.href = linkOrFolder.url;
-					favorite.appendChild(anchor);
-
-					anchor.innerHTML = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M12,0C5.4,0,0,5.4,0,12s5.4,12,12,12s12-5.4,12-12S18.6,0,12,0z M10.8,21.5c-4.7-0.6-8.4-4.6-8.4-9.5 c0-0.7,0.1-1.5,0.3-2.1l5.7,5.7v1.2c0,1.3,1.1,2.4,2.4,2.4V21.5z M19.1,18.5c-0.3-1-1.2-1.7-2.3-1.7h-1.2v-3.6 c0-0.7-0.5-1.2-1.2-1.2H7.2V9.6h2.4c0.7,0,1.2-0.5,1.2-1.2V6h2.4c1.3,0,2.4-1.1,2.4-2.4V3.1c3.5,1.4,6,4.9,6,8.9 C21.6,14.5,20.6,16.8,19.1,18.5z"/></svg>'
-
-					let paragraph = document.createElement('p');
-					paragraph.innerHTML = linkOrFolder.title;
-					anchor.appendChild(paragraph);
-				}
-				// Folder
-				else {
-					shouldMakeThisFolder = true;
-					if (currentFolderID == 0) {
-						if ((linkOrFolder.id == 1 && !allowBookmarksBar) || (linkOrFolder.id == 2 && !allowOtherBookmarks) || (linkOrFolder.id == 3 && !allowMobileBookmarks)) {
-							shouldMakeThisFolder = false;
-						}
-					}
-
-					if (shouldMakeThisFolder) {
-						let favorite = document.createElement('div');
-						favorite.className = 'favorite folder';
-						favorite.dataset.id = linkOrFolder.id;
-						row.appendChild(favorite);
-
-						let button = document.createElement('button');
-						favorite.appendChild(button);
-
-						button.innerHTML = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve"><path class="st0" d="M9.6,2.4H2.4C1.1,2.4,0,3.5,0,4.8l0,14.4c0,1.3,1.1,2.4,2.4,2.4h19.2c1.3,0,2.4-1.1,2.4-2.4v-12 c0-1.3-1.1-2.4-2.4-2.4H12L9.6,2.4z"/></svg>'
-
-						let paragraph = document.createElement('p');
-						paragraph.innerHTML = linkOrFolder.title;
-						button.appendChild(paragraph);
-					}
-				}
-			}
-
-			// Set up the click detection
-			folders = document.getElementsByClassName('folder');
-			for (let i = 0; i < folders.length; i++) {
-				folder = folders[i];
-				folder.onclick = function(e) {
-					shouldFocus = ! isRealClick(e);
-					newFolderID = this.dataset.id;
-					displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, newFolderID, numberOfColumns, shouldFocus);
-				}
-			}
-
-			// Set up the back button and title
-			back = document.getElementById('back');
-			currentFolderSpan = document.getElementById('currentFolder');
-
-			if (currentFolderID != null && currentFolderID != rootFolderID) {
-				chrome.bookmarks.get(currentFolderID, function test(currentFolderNode) {
-					parentFolderID = currentFolderNode[0].parentId;
-
-					back.className = 'visible';
-					back.onclick = function(e) {
-						shouldFocus = ! isRealClick(e);
-						displayBookmarks(showBookmarks, allowBookmarksBar, allowOtherBookmarks, allowMobileBookmarks, parentFolderID, numberOfColumns, shouldFocus);
-					}
-
-					currentFolderSpan.innerHTML = currentFolderNode[0].title;
-				});
-			}
-			else {
-				back.className = '';
-
-				currentFolderSpan.innerHTML = '';
-			}
-
-			if (shouldFocus) {
-				focusOnBookmarks();
-			}
-		});
-	}
-}
-
-async function settingsLink() {
-	document.getElementById('settings').onclick = function() {
-		chrome.tabs.create({'url': '/options/options.html' });
-	};
-}
-
-async function navigate() {
-	document.onkeydown = function (e) {
-		// Get key
-		key = e.key;
-
-		// Get row and column
-		rowElement = e.composedPath()[2];
-		if (! rowElement.classList || ! rowElement.classList.contains('row')) {
-			focusOnBookmarks();
-			return;
-		}
-		row = parseInt(rowElement.id.split('row')[1]);
-		rowCount = e.composedPath()[3].children.length;
-		columns = rowElement.children;
-		colCount = columns.length;
-		columnId = e.composedPath()[1].dataset.id;
-		col = 0;
-		for (col = 0; col < columns.length; col++) {
-			if (columns[col].dataset.id == columnId) {
-				break;
-			}
-		};
-
-		// Get alignment
-		alignment = e.composedPath()[3].className;
-
-		// Handle each key
-		if (key == 'ArrowLeft') {
-			// Move left
-			if (col > 0) {
-				newFocus = document.querySelector('#row' + String(row) + ' .favorite:nth-child(' + String(col) + ') :first-child');
-				newFocus.focus();
-			}
-
-			// Move up & far right
-			else if (row > 0) {
-				newFocus = document.querySelector('#row' + String(row-1) + ' .favorite:last-child :first-child');
-				newFocus.focus();
-			}
-		}
-		else if (key == 'ArrowRight') {
-			// Move right
-			if (col < colCount - 1) {
-				newFocus = document.querySelector('#row' + String(row) + ' .favorite:nth-child(' + String(col+2) + ') :first-child');
-				newFocus.focus();
-			}
-
-			// Move down & far left
-			else if (row < rowCount - 1) {
-				newFocus = document.querySelector('#row' + String(row+1) + ' .favorite:nth-child(1) :first-child');
-				newFocus.focus();
-			}
-		}
-		else if (key == 'ArrowUp') {
-			// Move up
-			if (row > 0) {
-				// Figure out the new column
-				newCol = col+1;
-				newColCount = document.querySelector('#row' + String(row-1)).children.length;
-				if (newColCount != colCount) {
-					if (alignment == 'center') {
-						newCol = col+1 - Math.ceil((colCount-newColCount)/2);
-					} else if (alignment == 'right') {
-						newCol = col+1 - (colCount - newColCount);
-					}
-				}
-
-				newFocus = document.querySelector('#row' + String(row-1) + ' .favorite:nth-child(' + String(newCol) + ') :first-child');
-				newFocus.focus();
-			}
-		}
-		else if (key == 'ArrowDown') {
-			// Move down
-			if (row < rowCount - 1) {
-				// Figure out the new column
-				newCol = col+1;
-				newColCount = document.querySelector('#row' + String(row+1)).children.length;
-				if (newColCount != colCount) {
-					if (alignment == 'left' && newCol > newColCount) {
-						newCol = newColCount;
-					} else if (alignment == 'center') {
-						newCol = col+1 - Math.ceil((colCount-newColCount)/2);
-						if (newCol < 1)
-							newCol = 1;
-						else if (newCol > newColCount)
-							newCol = newColCount;
-					} else if (alignment == 'right') {
-						newCol = col+1 - (colCount - newColCount);
-						if (newCol < 1)
-							newCol = 1;
-					}
-				}
-
-				newFocus = document.querySelector('#row' + String(row+1) + ' .favorite:nth-child(' + String(newCol) + ') :first-child');
-				newFocus.focus();
-			}
-		}
-		else if (key == 'Backspace' || key == 'Escape') {
-			backButton = document.getElementById('back');
-			if (backButton.classList.contains('visible'))
-				backButton.click();
-		}
-	};
-}
-
-function focusOnBookmarks() {
-	newFocus = document.querySelector('#row0 .favorite:first-child :first-child');
-	if (newFocus) {
-		newFocus.focus();
-	}
-}
-
-async function main() {
-	await setDefaults();
-	loadOptions();
-	loadBackgroundImage();
-	settingsLink();
-	navigate();
-}
 main();
