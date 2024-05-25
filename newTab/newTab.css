@@ -106,39 +106,14 @@ body {
 }
 .background {
 	background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-	/* background: none !important; */
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
 }
 .overlay {
 	width: 100%;
 	height: 100vh;
 	background-color: var(--overlayColor);
-}
-.verticalCenter {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-.bottom {
-	position: absolute;
-	bottom: 25%;
-	left: 50%;
-	transform: translate(-50%, 70%);
-}
-.topThird {
-	position: absolute;
-	top: 33%;
-	left: 50%;
-	transform: translate(-50%, -33%);
-}
-.bottomThird {
-	position: absolute;
-	bottom: 33%;
-	left: 50%;
-	transform: translate(-50%, 33%);
 }
 
 
@@ -153,11 +128,21 @@ h1 {
 h2 {
 	font-size: 1.5rem;
 }
+
+
+
+/* Time & Date */
+#timeAndDate {
+	position: absolute;
+	top: 33%;
+	left: 50%;
+	transform: translate(-50%, -33%);
+}
 #time {
 	letter-spacing: 0.05em;
 }
 #time span:not(:first-child):not(#amPM)::before {
-    content: ':';
+	content: ':';
 }
 #amPM::before {
 	content: ' '
@@ -166,16 +151,20 @@ h2 {
 	content: ' ';
 }
 #month::after {
-    content: ' ';
+	content: ' ';
 }
 #day + #year::before {
-    content: ', ';
+	content: ', ';
 }
 
 
 
 /* Favorites */
 #favoritesContainer {
+	position: absolute;
+	top: 66%;
+	left: 50%;
+	transform: translateX(-50%);
 	opacity: 0;
 }
 #favoritesContainer.visible {
@@ -183,9 +172,29 @@ h2 {
 }
 #favorites {
 	width: max-content;
-    max-height: 25vh;
+	height: 86px; /* 86px * rows + 16px * (rows - 1) */
 	padding: 1rem;
 	overflow-y: auto;
+}
+@media (min-height: 650px) {
+	#favorites {
+		height: 188px;
+	}
+}
+@media (min-height: 900px) {
+	#favorites {
+		height: 290px;
+	}
+}
+@media (min-height: 1150px) {
+	#favorites {
+		height: 392px;
+	}
+}
+@media (min-height: 1400px) {
+	#favorites {
+		height: 494px;
+	}
 }
 #favorites .row {
 	display: flex;

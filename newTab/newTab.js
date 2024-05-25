@@ -15,7 +15,6 @@ const options = {
 	mainFont: 'Montserrat',
 	accentFont: 'Marck Script',
 	zoomLevel: 100,
-	verticallyCenterEverything: false,
 	showSettingsButton: true,
 
 	// Time
@@ -80,19 +79,6 @@ async function displayPage()
 
 	// Zoom level
 	cssVariables.setProperty('--zoomLevel', `${options.zoomLevel}%`);
-
-	// Vertically center everything
-	if (options.verticallyCenterEverything) {
-		if (element = document.getElementById('timeAndDate'))
-			element.classList.add('topThird');
-		if (element = document.getElementById('favoritesContainer'))
-			element.classList.add('bottomThird');
-	} else {
-		if (element = document.getElementById('timeAndDate'))
-			element.classList.add('verticalCenter');
-		if (element = document.getElementById('favoritesContainer'))
-			element.classList.add('bottom');
-	}
 
 	// Show settings button
 	if (options.showSettingsButton)
