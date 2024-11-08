@@ -42,23 +42,21 @@
 }
 @media (prefers-color-scheme: dark) {
 	:root {
+		color-scheme: dark;
+
 		/* Colors */
 		--text: #EEEEEE;
-		--bg:   #292A2D;
+		--bg:   #16161A;
 
 		--colorDim: #803636;
 
-		--option:       rgba(0, 0, 0, 10%);
-		--optionHover:  rgba(127, 127, 127, 10%);
-		--optionActive: rgba(127, 127, 127, 20%);
+		--option:       #0f0f12;
+		--optionHover:  #1C1C21;
+		--optionActive: #232329;
 
 		--input:       #1E1F21;
 		--inputHover:  #2A2B2E;
 		--inputActive: #35373B;
-	}
-
-	html {
-		color-scheme: dark;
 	}
 }
 
@@ -173,6 +171,12 @@ header img {
 }
 .option:first-child {
 	margin-top: var(--margin);
+}
+p.option {
+	cursor: default;
+}
+p.option:hover, p.option:active {
+	background-color: var(--option);
 }
 .defaultCursor {
 	cursor: default;
